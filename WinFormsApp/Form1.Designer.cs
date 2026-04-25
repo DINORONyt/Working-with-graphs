@@ -14,6 +14,7 @@ partial class Form1
     {
         this.tabControl = new System.Windows.Forms.TabControl();
         this.tabPageLoad = new System.Windows.Forms.TabPage();
+        this.pnlGraph = new System.Windows.Forms.Panel();
         this.lblStatus = new System.Windows.Forms.Label();
         this.btnBrowseFile = new System.Windows.Forms.Button();
         this.btnLoadGraph = new System.Windows.Forms.Button();
@@ -47,6 +48,8 @@ partial class Form1
         this.lblCompareTarget = new System.Windows.Forms.Label();
         this.txtCompareStart = new System.Windows.Forms.TextBox();
         this.lblCompareStart = new System.Windows.Forms.Label();
+        this.btnRedrawGraph = new System.Windows.Forms.Button();
+        this.chkShowWeights = new System.Windows.Forms.CheckBox();
         this.tabControl.SuspendLayout();
         this.tabPageLoad.SuspendLayout();
         this.tabPageLab4.SuspendLayout();
@@ -67,12 +70,15 @@ partial class Form1
         this.tabControl.Location = new System.Drawing.Point(0, 0);
         this.tabControl.Name = "tabControl";
         this.tabControl.SelectedIndex = 0;
-        this.tabControl.Size = new System.Drawing.Size(900, 650);
+        this.tabControl.Size = new System.Drawing.Size(1100, 750);
         this.tabControl.TabIndex = 0;
 
         // 
         // tabPageLoad
         // 
+        this.tabPageLoad.Controls.Add(this.pnlGraph);
+        this.tabPageLoad.Controls.Add(this.btnRedrawGraph);
+        this.tabPageLoad.Controls.Add(this.chkShowWeights);
         this.tabPageLoad.Controls.Add(this.lblStatus);
         this.tabPageLoad.Controls.Add(this.btnBrowseFile);
         this.tabPageLoad.Controls.Add(this.btnLoadGraph);
@@ -81,7 +87,7 @@ partial class Form1
         this.tabPageLoad.Location = new System.Drawing.Point(4, 29);
         this.tabPageLoad.Name = "tabPageLoad";
         this.tabPageLoad.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPageLoad.Size = new System.Drawing.Size(892, 617);
+        this.tabPageLoad.Size = new System.Drawing.Size(1092, 717);
         this.tabPageLoad.TabIndex = 0;
         this.tabPageLoad.Text = "Загрузка графа";
         this.tabPageLoad.UseVisualStyleBackColor = true;
@@ -91,7 +97,7 @@ partial class Form1
         // 
         this.lblFilePath.AutoSize = true;
         this.lblFilePath.Font = new System.Drawing.Font("Segoe UI", 10F);
-        this.lblFilePath.Location = new System.Drawing.Point(30, 40);
+        this.lblFilePath.Location = new System.Drawing.Point(30, 20);
         this.lblFilePath.Name = "lblFilePath";
         this.lblFilePath.Size = new System.Drawing.Size(210, 23);
         this.lblFilePath.TabIndex = 0;
@@ -101,7 +107,7 @@ partial class Form1
         // txtFilePath
         // 
         this.txtFilePath.Font = new System.Drawing.Font("Segoe UI", 10F);
-        this.txtFilePath.Location = new System.Drawing.Point(30, 75);
+        this.txtFilePath.Location = new System.Drawing.Point(30, 50);
         this.txtFilePath.Name = "txtFilePath";
         this.txtFilePath.Size = new System.Drawing.Size(550, 30);
         this.txtFilePath.TabIndex = 1;
@@ -115,7 +121,7 @@ partial class Form1
         this.btnLoadGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         this.btnLoadGraph.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
         this.btnLoadGraph.ForeColor = System.Drawing.Color.White;
-        this.btnLoadGraph.Location = new System.Drawing.Point(600, 73);
+        this.btnLoadGraph.Location = new System.Drawing.Point(600, 48);
         this.btnLoadGraph.Name = "btnLoadGraph";
         this.btnLoadGraph.Size = new System.Drawing.Size(140, 35);
         this.btnLoadGraph.TabIndex = 2;
@@ -131,7 +137,7 @@ partial class Form1
         this.btnBrowseFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         this.btnBrowseFile.Font = new System.Drawing.Font("Segoe UI", 10F);
         this.btnBrowseFile.ForeColor = System.Drawing.Color.White;
-        this.btnBrowseFile.Location = new System.Drawing.Point(760, 73);
+        this.btnBrowseFile.Location = new System.Drawing.Point(760, 48);
         this.btnBrowseFile.Name = "btnBrowseFile";
         this.btnBrowseFile.Size = new System.Drawing.Size(100, 35);
         this.btnBrowseFile.TabIndex = 3;
@@ -144,10 +150,50 @@ partial class Form1
         // 
         this.lblStatus.AutoSize = true;
         this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-        this.lblStatus.Location = new System.Drawing.Point(30, 130);
+        this.lblStatus.Location = new System.Drawing.Point(30, 95);
         this.lblStatus.Name = "lblStatus";
         this.lblStatus.Size = new System.Drawing.Size(0, 25);
         this.lblStatus.TabIndex = 4;
+
+        // 
+        // chkShowWeights
+        // 
+        this.chkShowWeights.AutoSize = true;
+        this.chkShowWeights.Font = new System.Drawing.Font("Segoe UI", 10F);
+        this.chkShowWeights.Location = new System.Drawing.Point(300, 95);
+        this.chkShowWeights.Name = "chkShowWeights";
+        this.chkShowWeights.Size = new System.Drawing.Size(140, 27);
+        this.chkShowWeights.TabIndex = 5;
+        this.chkShowWeights.Text = "Показать веса";
+        this.chkShowWeights.UseVisualStyleBackColor = true;
+        this.chkShowWeights.CheckedChanged += new System.EventHandler(this.chkShowWeights_CheckedChanged);
+
+        // 
+        // btnRedrawGraph
+        // 
+        this.btnRedrawGraph.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
+        this.btnRedrawGraph.FlatAppearance.BorderSize = 0;
+        this.btnRedrawGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.btnRedrawGraph.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+        this.btnRedrawGraph.ForeColor = System.Drawing.Color.White;
+        this.btnRedrawGraph.Location = new System.Drawing.Point(460, 90);
+        this.btnRedrawGraph.Name = "btnRedrawGraph";
+        this.btnRedrawGraph.Size = new System.Drawing.Size(150, 35);
+        this.btnRedrawGraph.TabIndex = 6;
+        this.btnRedrawGraph.Text = "Перерисовать";
+        this.btnRedrawGraph.UseVisualStyleBackColor = false;
+        this.btnRedrawGraph.Click += new System.EventHandler(this.btnRedrawGraph_Click);
+
+        // 
+        // pnlGraph
+        // 
+        this.pnlGraph.BackColor = System.Drawing.Color.White;
+        this.pnlGraph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        this.pnlGraph.Location = new System.Drawing.Point(30, 140);
+        this.pnlGraph.Name = "pnlGraph";
+        this.pnlGraph.Size = new System.Drawing.Size(1030, 550);
+        this.pnlGraph.TabIndex = 7;
+        this.pnlGraph.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlGraph_Paint);
 
         // 
         // tabPageLab4
@@ -161,7 +207,7 @@ partial class Form1
         this.tabPageLab4.Location = new System.Drawing.Point(4, 29);
         this.tabPageLab4.Name = "tabPageLab4";
         this.tabPageLab4.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPageLab4.Size = new System.Drawing.Size(892, 617);
+        this.tabPageLab4.Size = new System.Drawing.Size(1092, 717);
         this.tabPageLab4.TabIndex = 1;
         this.tabPageLab4.Text = "Лаб 4: Обход графа";
         this.tabPageLab4.UseVisualStyleBackColor = true;
@@ -234,7 +280,7 @@ partial class Form1
         this.txtLab4Output.Name = "txtLab4Output";
         this.txtLab4Output.ReadOnly = true;
         this.txtLab4Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-        this.txtLab4Output.Size = new System.Drawing.Size(830, 420);
+        this.txtLab4Output.Size = new System.Drawing.Size(1030, 520);
         this.txtLab4Output.TabIndex = 5;
 
         // 
@@ -249,7 +295,7 @@ partial class Form1
         this.tabPageLab5.Location = new System.Drawing.Point(4, 29);
         this.tabPageLab5.Name = "tabPageLab5";
         this.tabPageLab5.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPageLab5.Size = new System.Drawing.Size(892, 617);
+        this.tabPageLab5.Size = new System.Drawing.Size(1092, 717);
         this.tabPageLab5.TabIndex = 2;
         this.tabPageLab5.Text = "Лаб 5: Дейкстра";
         this.tabPageLab5.UseVisualStyleBackColor = true;
@@ -322,7 +368,7 @@ partial class Form1
         this.txtLab5Output.Name = "txtLab5Output";
         this.txtLab5Output.ReadOnly = true;
         this.txtLab5Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-        this.txtLab5Output.Size = new System.Drawing.Size(830, 420);
+        this.txtLab5Output.Size = new System.Drawing.Size(1030, 520);
         this.txtLab5Output.TabIndex = 5;
 
         // 
@@ -337,7 +383,7 @@ partial class Form1
         this.tabPageLab6.Location = new System.Drawing.Point(4, 29);
         this.tabPageLab6.Name = "tabPageLab6";
         this.tabPageLab6.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPageLab6.Size = new System.Drawing.Size(892, 617);
+        this.tabPageLab6.Size = new System.Drawing.Size(1092, 717);
         this.tabPageLab6.TabIndex = 3;
         this.tabPageLab6.Text = "Лаб 6: Анализ + Вариант 17";
         this.tabPageLab6.UseVisualStyleBackColor = true;
@@ -410,7 +456,7 @@ partial class Form1
         this.txtLab6Output.Name = "txtLab6Output";
         this.txtLab6Output.ReadOnly = true;
         this.txtLab6Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-        this.txtLab6Output.Size = new System.Drawing.Size(830, 420);
+        this.txtLab6Output.Size = new System.Drawing.Size(1030, 520);
         this.txtLab6Output.TabIndex = 5;
 
         // 
@@ -425,7 +471,7 @@ partial class Form1
         this.tabPageCompare.Location = new System.Drawing.Point(4, 29);
         this.tabPageCompare.Name = "tabPageCompare";
         this.tabPageCompare.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPageCompare.Size = new System.Drawing.Size(892, 617);
+        this.tabPageCompare.Size = new System.Drawing.Size(1092, 717);
         this.tabPageCompare.TabIndex = 4;
         this.tabPageCompare.Text = "Сравнение алгоритмов";
         this.tabPageCompare.UseVisualStyleBackColor = true;
@@ -498,7 +544,7 @@ partial class Form1
         this.txtCompareOutput.Name = "txtCompareOutput";
         this.txtCompareOutput.ReadOnly = true;
         this.txtCompareOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-        this.txtCompareOutput.Size = new System.Drawing.Size(830, 420);
+        this.txtCompareOutput.Size = new System.Drawing.Size(1030, 520);
         this.txtCompareOutput.TabIndex = 5;
 
         // 
@@ -507,7 +553,7 @@ partial class Form1
         this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.BackColor = System.Drawing.Color.White;
-        this.ClientSize = new System.Drawing.Size(900, 650);
+        this.ClientSize = new System.Drawing.Size(1100, 750);
         this.Controls.Add(this.tabControl);
         this.Name = "Form1";
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -561,4 +607,9 @@ partial class Form1
     private System.Windows.Forms.TextBox txtCompareTarget;
     private System.Windows.Forms.Button btnCompare;
     private System.Windows.Forms.TextBox txtCompareOutput;
+
+    // Новые элементы для визуализации графа
+    private System.Windows.Forms.Panel pnlGraph;
+    private System.Windows.Forms.CheckBox chkShowWeights;
+    private System.Windows.Forms.Button btnRedrawGraph;
 }
