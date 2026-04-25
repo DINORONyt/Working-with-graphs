@@ -180,7 +180,7 @@ dotnet run --project WinFormsApp
    - Порядок обхода BFS и DFS
    - Ответ о достижимости целевой вершины
    - Список компонент связности
-   - ⏱ Время выполнения каждого алгоритма
+   -  Время выполнения каждого алгоритма
 5. На панели графа подсветится путь обхода (оранжевый)
 
 ####  Вкладка 3: ЛР 5 — Алгоритм Дейкстры
@@ -189,7 +189,7 @@ dotnet run --project WinFormsApp
 3. Результаты:
    - Таблица кратчайших расстояний до всех вершин
    - Маршрут до целевой вершины с суммарным весом
-   - ⏱ Время выполнения
+   - Время выполнения
 4. На панели графа подсветится кратчайший путь (красный)
 
 ####  Вкладка 4: ЛР 6 — Анализ графа
@@ -227,7 +227,7 @@ BFS: Central_Hospital → Clinic_A → Clinic_B → North_Hospital → MedPoint_
 DFS: Central_Hospital → Clinic_A → Clinic_C → MedPoint_4 → MedPoint_3 → MedPoint_2 → ...
 Достижима 'South_Hospital' из 'Central_Hospital': ДА
 Компоненты связности: 1
-⏱ Время: 3 мс
+Время: 3 мс
 ```
 
 #### Пример 3: Дейкстра (Central_Hospital → MedPoint_7)
@@ -243,7 +243,7 @@ DFS: Central_Hospital → Clinic_A → Clinic_C → MedPoint_4 → MedPoint_3 �
 Маршрут до MedPoint_7:
   Путь: Central_Hospital → Clinic_B → MedPoint_2 → MedPoint_3 → MedPoint_4 → MedPoint_5 → MedPoint_6 → MedPoint_7
   Расстояние: 21 мин.
-⏱ Время: 5 мс
+  Время: 5 мс
 ```
 
 #### Пример 4: Задача варианта 17
@@ -297,7 +297,7 @@ DFS: Central_Hospital → Clinic_A → Clinic_C → MedPoint_4 → MedPoint_3 �
 
 **В Visual Studio:**
 1. Откройте **Тест → Обозреватель тестов** (Ctrl+E, T)
-2. Нажмите **Запустить все** (▶️ Run All)
+2. Нажмите **Запустить все** (Run All)
 3.  Зелёные = пройдены,  Красные = провалены
 
 **Через консоль:**
