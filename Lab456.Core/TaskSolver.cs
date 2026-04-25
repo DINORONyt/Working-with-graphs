@@ -15,9 +15,12 @@ public class Graph
     public HashSet<string> Vertices { get; } = new();
 
     /// <summary>
-    /// Загрузка графа из CSV файла формата: Вершина1,Вершина2,Вес
+    /// Загрузка графа из текстового файла
+    /// Поддерживаемый формат строки: Вершина1 Вершина2 Вес
+    /// Пример: "A B 10" (через пробел или запятую)
+    /// Строки, начинающиеся с '#', считаются комментариями и пропускаются.
     /// </summary>
-    public void LoadFromCsv(string filePath)
+    public void LoadFromTxt(string filePath)
     {
         AdjacencyList.Clear();
         Vertices.Clear();
@@ -26,27 +29,40 @@ public class Graph
             throw new FileNotFoundException("Файл графа не найден.");
 
         var lines = File.ReadAllLines(filePath);
+
         foreach (var line in lines)
         {
-            if (string.IsNullOrWhiteSpace(line)) continue;
+            // Пропускаем пустые строки и комментарии
+            if (string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith("#"))
+                continue;
 
-            var parts = line.Split(',');
+            // Определяем разделитель (пробел или запятая)
+            char separator = line.Contains(',') ? ',' : ' ';
+            var parts = line.Split(separator);
+
             if (parts.Length < 2) continue;
 
             string u = parts[0].Trim();
             string v = parts[1].Trim();
-            int weight = parts.Length > 2 ? int.Parse(parts[2].Trim()) : 0;
 
+            // Если вес не указан, считаем его равным 1
+            int weight = parts.Length > 2 ? int.Parse(parts[2].Trim()) : 1;
+
+            // Добавляем вершины
             Vertices.Add(u);
             Vertices.Add(v);
 
+            // Инициализируем списки смежности, если нужно
             if (!AdjacencyList.ContainsKey(u)) AdjacencyList[u] = new();
             if (!AdjacencyList.ContainsKey(v)) AdjacencyList[v] = new();
 
-            // Неориентированный граф (дороги/маршруты двусторонние)
+            // Неориентированный граф (добавляем ребро в обе стороны)
             AdjacencyList[u].Add((v, weight));
             AdjacencyList[v].Add((u, weight));
         }
+
+        if (Vertices.Count == 0)
+            throw new Exception("Граф пуст: файл не содержит валидных данных.");
     }
 
     public bool HasVertex(string v) => Vertices.Contains(v);
@@ -61,6 +77,8 @@ public static class Algorithms
 
     public static List<string> BFS(Graph g, string start)
     {
+        if (!g.HasVertex(start)) return new List<string>();
+
         var visited = new HashSet<string>();
         var queue = new Queue<string>();
         var order = new List<string>();
@@ -87,6 +105,8 @@ public static class Algorithms
 
     public static List<string> DFS(Graph g, string start)
     {
+        if (!g.HasVertex(start)) return new List<string>();
+
         var visited = new HashSet<string>();
         var order = new List<string>();
         DFSRecursive(g, start, visited, order);
@@ -108,6 +128,7 @@ public static class Algorithms
     public static bool IsReachable(Graph g, string start, string target)
     {
         if (!g.HasVertex(start) || !g.HasVertex(target)) return false;
+
         var visited = new HashSet<string>();
         var queue = new Queue<string>();
         queue.Enqueue(start);
@@ -171,7 +192,10 @@ public static class Algorithms
         var distances = g.Vertices.ToDictionary(v => v, v => int.MaxValue);
         var parents = new Dictionary<string, string>();
         var visited = new HashSet<string>();
+
         var pq = new PriorityQueue<string, int>();
+
+        if (!distances.ContainsKey(start)) return (distances, parents);
 
         distances[start] = 0;
         pq.Enqueue(start, 0);
@@ -259,9 +283,12 @@ public static class Algorithms
         var mst = new List<(string, string, int)>();
         var inMST = new HashSet<string>();
         var pq = new PriorityQueue<(string U, string V, int W), int>();
-        string start = g.Vertices.First();
 
+        if (g.Vertices.Count == 0) return mst;
+
+        string start = g.Vertices.First();
         inMST.Add(start);
+
         foreach (var (neighbor, weight) in g.AdjacencyList[start])
             pq.Enqueue((start, neighbor, weight), weight);
 

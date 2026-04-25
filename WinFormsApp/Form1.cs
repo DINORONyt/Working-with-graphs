@@ -17,12 +17,13 @@ public partial class Form1 : Form
         InitializeComponent();
     }
 
-    // Загрузка графа (общая для всех вкладок)
+    // Загрузка графа из текстового файла
     private void btnLoadGraph_Click(object sender, EventArgs e)
     {
         try
         {
-            _graph.LoadFromCsv(txtFilePath.Text);
+            // Вызываем новый метод LoadFromTxt
+            _graph.LoadFromTxt(txtFilePath.Text);
             _loadedFilePath = txtFilePath.Text;
             lblStatus.Text = $"✅ Граф загружен: {_graph.Vertices.Count} вершин, {_graph.AdjacencyList.Values.Sum(l => l.Count) / 2} рёбер";
             lblStatus.ForeColor = System.Drawing.Color.Green;
