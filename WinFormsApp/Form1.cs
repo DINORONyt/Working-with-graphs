@@ -12,385 +12,623 @@ namespace WinFormsApp
     public partial class Form1 : Form
     {
         private Graph _graph = new Graph();
-        private Dictionary<string, PointF> _positions = new Dictionary<string, PointF>();
-        private List<string> _highlightPath = new List<string>();
-        private List<(string U, string V)> _highlightEdges = new List<(string U, string V)>();
-        private List<string> _articulationPoints = new List<string>();
+        private string _loadedFilePath = "";
+        private Dictionary<string, int> _lastDistances = new Dictionary<string, int>();
+        private Dictionary<string, string> _lastParents = new Dictionary<string, string>();
 
         public Form1()
         {
             InitializeComponent();
-
-            // Устанавливаем значения по умолчанию
-            txtFilePath.Text = "graph.txt";
-            txtLab4Start.Text = "Hospital_Central";
-            txtLab4Target.Text = "Hospital_South";
-            txtLab5Start.Text = "Hospital_Central";
-            txtLab5Target.Text = "MedPoint_7";
-            txtLab6Start.Text = "MedPoint_4";
-            txtLab6Hospitals.Text = "Hospital_Central,Hospital_North,Hospital_South";
-            txtCompareStart.Text = "Hospital_Central";
-            txtCompareTarget.Text = "MedPoint_7";
         }
 
-        // ==================== ОТРИСОВКА ГРАФА ====================
+        // ==================== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ====================
 
-        private void CalculatePositions(int width, int height)
+        private void UpdateComboBoxes()
         {
-            _positions.Clear();
             var vertices = _graph.Vertices.ToList();
-            if (vertices.Count == 0) return;
 
-            float cx = width / 2f;
-            float cy = height / 2f;
-            float radius = Math.Min(cx, cy) - 80;
+            cmbBFSStart.Items.Clear();
+            cmbDFSStart.Items.Clear();
+            cmbConnectivityStart.Items.Clear();
+            cmbConnectivityTarget.Items.Clear();
+            cmbDijkstraSource.Items.Clear();
+            cmbDijkstraRouteStart.Items.Clear();
+            cmbDijkstraRouteTarget.Items.Clear();
+            cmbVariantStart.Items.Clear();
+            cmbVariantTarget.Items.Clear();
 
-            for (int i = 0; i < vertices.Count; i++)
+            foreach (var v in vertices)
             {
-                double angle = 2 * Math.PI * i / vertices.Count - Math.PI / 2;
-                _positions[vertices[i]] = new PointF(
-                    cx + radius * (float)Math.Cos(angle),
-                    cy + radius * (float)Math.Sin(angle));
+                cmbBFSStart.Items.Add(v);
+                cmbDFSStart.Items.Add(v);
+                cmbConnectivityStart.Items.Add(v);
+                cmbConnectivityTarget.Items.Add(v);
+                cmbDijkstraSource.Items.Add(v);
+                cmbDijkstraRouteStart.Items.Add(v);
+                cmbDijkstraRouteTarget.Items.Add(v);
+                cmbVariantStart.Items.Add(v);
+                cmbVariantTarget.Items.Add(v);
+            }
+
+            if (vertices.Count > 0)
+            {
+                cmbBFSStart.SelectedIndex = 0;
+                cmbDFSStart.SelectedIndex = 0;
+                cmbConnectivityStart.SelectedIndex = 0;
+                cmbConnectivityTarget.SelectedIndex = vertices.Count > 1 ? 1 : 0;
+                cmbDijkstraSource.SelectedIndex = 0;
+                cmbDijkstraRouteStart.SelectedIndex = 0;
+                cmbDijkstraRouteTarget.SelectedIndex = vertices.Count > 1 ? 1 : 0;
+                cmbVariantStart.SelectedIndex = 0;
+                cmbVariantTarget.SelectedIndex = vertices.Count > 1 ? 1 : 0;
             }
         }
 
-        private void DrawGraph(Graphics g, int width, int height)
+        private void AppendOutput(string text, Color? color = null)
         {
-            g.Clear(Color.White);
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-            if (_graph.Vertices.Count == 0)
+            txtOutput.AppendText(text + "\n");
+            if (color.HasValue)
             {
-                g.DrawString("Загрузите граф", new Font("Segoe UI", 14), Brushes.Gray, width / 2 - 70, height / 2);
-                return;
-            }
-
-            CalculatePositions(width, height);
-
-            // Рёбра
-            foreach (var u in _graph.AdjacencyList.Keys)
-            {
-                foreach (var (v, w) in _graph.AdjacencyList[u])
-                {
-                    if (string.Compare(u, v) > 0) continue;
-
-                    bool isHighlighted = _highlightEdges.Any(e => (e.U == u && e.V == v) || (e.U == v && e.V == u));
-                    bool isPath = IsPathEdge(u, v);
-
-                    using (var pen = new Pen(
-                        isPath ? Color.Red : (isHighlighted ? Color.DarkGreen : Color.LightGray),
-                        isPath || isHighlighted ? 3 : 1))
-                    {
-                        g.DrawLine(pen, _positions[u], _positions[v]);
-                    }
-
-                    if (chkShowWeights.Checked)
-                    {
-                        var mid = new PointF((_positions[u].X + _positions[v].X) / 2, (_positions[u].Y + _positions[v].Y) / 2);
-                        var txt = w.ToString();
-                        var sz = g.MeasureString(txt, new Font("Arial", 9));
-                        g.FillRectangle(Brushes.White, mid.X - sz.Width / 2 - 2, mid.Y - sz.Height / 2 - 2, sz.Width + 4, sz.Height + 4);
-                        g.DrawString(txt, new Font("Arial", 9, FontStyle.Bold), Brushes.Black, mid.X - sz.Width / 2, mid.Y - sz.Height / 2);
-                    }
-                }
-            }
-
-            // Вершины
-            foreach (var v in _positions.Keys)
-            {
-                var p = _positions[v];
-                float r = 25;
-
-                bool isArt = _articulationPoints.Contains(v);
-                bool isPathNode = _highlightPath.Contains(v);
-                bool isHospital = v.Contains("Hospital");
-
-                Color fill = isArt ? Color.Red : (isPathNode ? Color.Orange : (isHospital ? Color.DodgerBlue : Color.LightGray));
-
-                g.FillEllipse(new SolidBrush(fill), p.X - r, p.Y - r, r * 2, r * 2);
-                g.DrawEllipse(Pens.Black, p.X - r, p.Y - r, r * 2, r * 2);
-
-                var font = new Font("Segoe UI", 9, FontStyle.Bold);
-                var sz = g.MeasureString(v, font);
-                g.FillRectangle(Brushes.White, p.X - sz.Width / 2, p.Y + r + 2, sz.Width, sz.Height + 4);
-                g.DrawString(v, font, Brushes.Black, p.X - sz.Width / 2, p.Y + r + 4);
+                // Можно добавить выделение цветом, если нужно
             }
         }
 
-        private bool IsPathEdge(string u, string v)
+        private void ClearOutput()
         {
-            for (int i = 0; i < _highlightPath.Count - 1; i++)
-            {
-                if ((_highlightPath[i] == u && _highlightPath[i + 1] == v) ||
-                    (_highlightPath[i] == v && _highlightPath[i + 1] == u)) return true;
-            }
-            return false;
+            txtOutput.Clear();
         }
 
-        private void RefreshAllGraphs()
-        {
-            if (pnlGraphMain != null) pnlGraphMain.Invalidate();
-            if (pnlGraphLab4 != null) pnlGraphLab4.Invalidate();
-            if (pnlGraphLab5 != null) pnlGraphLab5.Invalidate();
-            if (pnlGraphLab6 != null) pnlGraphLab6.Invalidate();
-        }
-
-        // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
+        // ==================== ОСНОВНЫЕ ОБРАБОТЧИКИ ====================
 
         private void btnLoadGraph_Click(object sender, EventArgs e)
         {
-            try
+            using (var openFileDialog = new OpenFileDialog())
             {
-                _graph.LoadFromTxt(txtFilePath.Text);
-                lblStatus.Text = $"✅ Загружено: {_graph.Vertices.Count} вершин, {_graph.EdgeCount} рёбер";
-                lblStatus.ForeColor = Color.Green;
+                openFileDialog.Filter = "Text files|*.txt|CSV files|*.csv|All files|*.*";
+                openFileDialog.Title = "Выберите файл графа";
 
-                _highlightPath.Clear();
-                _highlightEdges.Clear();
-                _articulationPoints.Clear();
-
-                RefreshAllGraphs();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                lblStatus.Text = "❌ Ошибка загрузки";
-                lblStatus.ForeColor = Color.Red;
-            }
-        }
-
-        private void btnBrowseFile_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new OpenFileDialog())
-            {
-                dlg.Filter = "Text files|*.txt|All files|*.*";
-                dlg.Title = "Выберите файл графа";
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    txtFilePath.Text = dlg.FileName;
+                    try
+                    {
+                        _graph.LoadFromTxt(openFileDialog.FileName);
+                        _loadedFilePath = openFileDialog.FileName;
+
+                        UpdateComboBoxes();
+
+                        AppendOutput($"✅ Граф успешно загружен из файла: {Path.GetFileName(_loadedFilePath)}");
+                        AppendOutput($"📊 Вершин: {_graph.Vertices.Count}");
+                        AppendOutput($"🔗 Рёбер: {_graph.EdgeCount}");
+                        AppendOutput("");
+                        AppendOutput($"Вершины: {string.Join(", ", _graph.Vertices.Take(10))}" +
+                                    (_graph.Vertices.Count > 10 ? "..." : ""));
+                        AppendOutput("");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка загрузки графа:\n{ex.Message}",
+                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        AppendOutput($"❌ Ошибка: {ex.Message}");
+                    }
                 }
             }
         }
 
-        private void btnRedrawGraph_Click(object sender, EventArgs e)
-        {
-            RefreshAllGraphs();
-        }
-
-        private void chkShowWeights_CheckedChanged(object sender, EventArgs e)
-        {
-            RefreshAllGraphs();
-        }
-
-        // ==================== ЛАБОРАТОРНАЯ 4 ====================
-
-        private void btnLab4Run_Click(object sender, EventArgs e)
+        private void btnBFS_Click(object sender, EventArgs e)
         {
             if (_graph.Vertices.Count == 0)
             {
-                MessageBox.Show("Сначала загрузите граф!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string start = txtLab4Start.Text.Trim();
-            string target = txtLab4Target.Text.Trim();
+            string start = cmbBFSStart.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(start)) return;
 
-            if (!_graph.HasVertex(start))
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            var result = Algorithms.BFS(_graph, start);
+
+            stopwatch.Stop();
+
+            AppendOutput($"BFS от вершины «{start}» ({result.Count} вершин)");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+
+            // Группируем по уровням
+            var levels = new Dictionary<string, int>();
+            var queue = new Queue<string>();
+            queue.Enqueue(start);
+            levels[start] = 0;
+
+            while (queue.Count > 0)
             {
-                MessageBox.Show($"Вершина '{start}' не найдена!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                var current = queue.Dequeue();
+                foreach (var (neighbor, _) in _graph.AdjacencyList[current])
+                {
+                    if (!levels.ContainsKey(neighbor))
+                    {
+                        levels[neighbor] = levels[current] + 1;
+                        queue.Enqueue(neighbor);
+                    }
+                }
             }
 
-            var sw = Stopwatch.StartNew();
-            var bfs = Algorithms.BFS(_graph, start);
-            var dfs = Algorithms.DFS(_graph, start);
-            bool reachable = _graph.HasVertex(target) ? Algorithms.IsReachable(_graph, start, target) : false;
-            var components = Algorithms.GetConnectedComponents(_graph);
-            sw.Stop();
-
-            txtLab4Output.Clear();
-            txtLab4Output.AppendText($"BFS от '{start}': {string.Join(" -> ", bfs)}\n\n");
-            txtLab4Output.AppendText($"DFS от '{start}': {string.Join(" -> ", dfs)}\n\n");
-            txtLab4Output.AppendText($"Достижима '{target}' из '{start}': {(reachable ? "ДА" : "НЕТ")}\n\n");
-            txtLab4Output.AppendText($"Компонент связности: {components.Count}\n");
-            for (int i = 0; i < components.Count; i++)
+            var maxLevel = levels.Values.Max();
+            for (int level = 0; level <= maxLevel; level++)
             {
-                txtLab4Output.AppendText($"  {i + 1}. [{string.Join(", ", components[i])}]\n");
+                var verticesAtLevel = levels.Where(kvp => kvp.Value == level)
+                    .Select(kvp => kvp.Key).OrderBy(v => v);
+                AppendOutput($"Уровень {level}: {string.Join(", ", verticesAtLevel)}");
             }
-            txtLab4Output.AppendText($"\n⏱ Время выполнения: {sw.ElapsedMilliseconds} мс");
 
-            // Подсветка BFS пути
-            _highlightPath = new List<string>(bfs);
-            _highlightEdges.Clear();
-            RefreshAllGraphs();
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
-        // ==================== ЛАБОРАТОРНАЯ 5 ====================
-
-        private void btnLab5Run_Click(object sender, EventArgs e)
+        private void btnDFS_Click(object sender, EventArgs e)
         {
             if (_graph.Vertices.Count == 0)
             {
-                MessageBox.Show("Сначала загрузите граф!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string start = txtLab5Start.Text.Trim();
-            string target = txtLab5Target.Text.Trim();
+            string start = cmbDFSStart.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(start)) return;
 
-            if (!_graph.HasVertex(start))
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            var result = Algorithms.DFS(_graph, start);
+
+            stopwatch.Stop();
+
+            AppendOutput($"DFS от вершины «{start}» ({result.Count} вершин)");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"Порядок обхода:");
+            AppendOutput(string.Join(" → ", result));
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
+        }
+
+        private void btnCheckConnectivity_Click(object sender, EventArgs e)
+        {
+            if (_graph.Vertices.Count == 0)
             {
-                MessageBox.Show($"Вершина '{start}' не найдена!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var sw = Stopwatch.StartNew();
-            var (distances, parents) = Algorithms.Dijkstra(_graph, start);
-            var path = Algorithms.ReconstructPath(parents, target);
-            sw.Stop();
+            string start = cmbConnectivityStart.SelectedItem?.ToString();
+            string target = cmbConnectivityTarget.SelectedItem?.ToString();
 
-            txtLab5Output.Clear();
-            txtLab5Output.AppendText($"Кратчайшие расстояния от '{start}':\n");
+            if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(target)) return;
+
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            bool reachable = Algorithms.IsReachable(_graph, start, target);
+
+            stopwatch.Stop();
+
+            AppendOutput($"Проверка достижимости (BFS)");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"Из: {start}");
+            AppendOutput($"В: {target}");
+            AppendOutput("");
+
+            if (reachable)
+            {
+                AppendOutput($"✅ Вершина «{target}» ДОСТИЖИМА из «{start}»");
+
+                // Находим путь
+                var path = FindBFSPath(start, target);
+                if (path.Count > 0)
+                {
+                    AppendOutput("");
+                    AppendOutput($"Путь: {string.Join(" → ", path)}");
+                    AppendOutput($"Количество рёбер: {path.Count - 1}");
+                }
+            }
+            else
+            {
+                AppendOutput($"❌ Вершина «{target}» НЕ ДОСТИЖИМА из «{start}»");
+            }
+
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
+        }
+
+        private List<string> FindBFSPath(string start, string target)
+        {
+            var visited = new HashSet<string>();
+            var parents = new Dictionary<string, string>();
+            var queue = new Queue<string>();
+
+            queue.Enqueue(start);
+            visited.Add(start);
+
+            while (queue.Count > 0)
+            {
+                var currentNode = queue.Dequeue();  // ← Изменили current на currentNode
+                if (currentNode == target) break;
+
+                foreach (var (neighbor, _) in _graph.AdjacencyList[currentNode])
+                {
+                    if (!visited.Contains(neighbor))
+                    {
+                        visited.Add(neighbor);
+                        parents[neighbor] = currentNode;
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            // Восстанавливаем путь
+            var path = new List<string>();
+            string? currentNodePath = target;  // ← Изменили current на currentNodePath
+            while (currentNodePath != null)
+            {
+                path.Add(currentNodePath);
+                if (parents.TryGetValue(currentNodePath, out var parent))
+                    currentNodePath = parent;
+                else
+                    currentNodePath = null;
+            }
+
+            path.Reverse();
+            return path;
+        }
+
+        private void btnDijkstraAll_Click(object sender, EventArgs e)
+        {
+            if (_graph.Vertices.Count == 0)
+            {
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string source = cmbDijkstraSource.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(source)) return;
+
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            var (distances, parents) = Algorithms.Dijkstra(_graph, source);
+
+            _lastDistances = distances;
+            _lastParents = parents;
+
+            stopwatch.Stop();
+
+            AppendOutput($"Алгоритм Дейкстры от «{source}»");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"Кратчайшие расстояния до всех вершин:");
+            AppendOutput("");
+
             foreach (var kvp in distances.OrderBy(x => x.Value))
             {
-                string dist = kvp.Value == int.MaxValue ? "∞" : kvp.Value.ToString();
-                txtLab5Output.AppendText($"  {kvp.Key}: {dist}\n");
+                string dist = kvp.Value == int.MaxValue ? "∞ (недостижима)" : $"{kvp.Value}";
+                AppendOutput($"  {kvp.Key,-30} : {dist}");
             }
 
-            if (_graph.HasVertex(target) && distances[target] != int.MaxValue)
-            {
-                txtLab5Output.AppendText($"\nМаршрут до '{target}':\n");
-                txtLab5Output.AppendText($"  Путь: {string.Join(" -> ", path)}\n");
-                txtLab5Output.AppendText($"  Расстояние: {distances[target]}\n");
-            }
-
-            txtLab5Output.AppendText($"\n⏱ Время выполнения: {sw.ElapsedMilliseconds} мс");
-
-            // Подсветка пути
-            _highlightPath = new List<string>(path);
-            _highlightEdges.Clear();
-            RefreshAllGraphs();
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
-        // ==================== ЛАБОРАТОРНАЯ 6 ====================
-
-        private void btnLab6Run_Click(object sender, EventArgs e)
+        private void btnFindRoute_Click(object sender, EventArgs e)
         {
             if (_graph.Vertices.Count == 0)
             {
-                MessageBox.Show("Сначала загрузите граф!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var sw = Stopwatch.StartNew();
-            _articulationPoints = Algorithms.FindArticulationPoints(_graph);
+            string start = cmbDijkstraRouteStart.SelectedItem?.ToString();
+            string target = cmbDijkstraRouteTarget.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(target)) return;
+
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            var (distances, parents) = Algorithms.Dijkstra(_graph, start);
+            var path = Algorithms.ReconstructPath(parents, target);
+
+            stopwatch.Stop();
+
+            AppendOutput($"Кратчайший маршрут (Дейкстра)");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"От: {start}");
+            AppendOutput($"До: {target}");
+            AppendOutput("");
+
+            if (distances[target] == int.MaxValue)
+            {
+                AppendOutput($"❌ Маршрут не найден (вершины не связаны)");
+            }
+            else
+            {
+                AppendOutput($"✅ Маршрут найден:");
+                AppendOutput("");
+                AppendOutput($"  {string.Join("\n  ↓\n  ", path)}");
+                AppendOutput("");
+                AppendOutput($"Суммарное расстояние: {distances[target]}");
+                AppendOutput($"Количество вершин: {path.Count}");
+                AppendOutput($"Количество рёбер: {path.Count - 1}");
+            }
+
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
+        }
+
+        private void btnArticulationPoints_Click(object sender, EventArgs e)
+        {
+            if (_graph.Vertices.Count == 0)
+            {
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            var points = Algorithms.FindArticulationPoints(_graph);
+
+            stopwatch.Stop();
+
+            AppendOutput($"Точки сочленения (Articulation Points)");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+
+            if (points.Count == 0)
+            {
+                AppendOutput($"✅ Точки сочленения отсутствуют");
+                AppendOutput("");
+                AppendOutput("Граф устойчив к удалению любой отдельной вершины");
+            }
+            else
+            {
+                AppendOutput($"Найдено точек сочленения: {points.Count}");
+                AppendOutput("");
+                AppendOutput("Критические вершины:");
+                foreach (var point in points.OrderBy(p => p))
+                {
+                    AppendOutput($"  • {point}");
+                }
+                AppendOutput("");
+                AppendOutput("💡 Удаление любой из этих вершин разорвёт граф на компоненты");
+            }
+
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
+        }
+
+        private void btnMST_Click(object sender, EventArgs e)
+        {
+            if (_graph.Vertices.Count == 0)
+            {
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
             var mst = Algorithms.GetMSTPrim(_graph);
-            sw.Stop();
+            int totalWeight = mst.Sum(edge => edge.W);
 
-            txtLab6Output.Clear();
-            txtLab6Output.AppendText($"Точки сочленения ({_articulationPoints.Count}):\n");
-            txtLab6Output.AppendText($"  {string.Join(", ", _articulationPoints)}\n\n");
+            stopwatch.Stop();
 
-            txtLab6Output.AppendText($"Минимальное остовное дерево:\n");
-            txtLab6Output.AppendText($"  Суммарный вес: {mst.Sum(edge => edge.W)}\n");
-            foreach (var edge in mst)
+            AppendOutput($"Минимальное остовное дерево (МОД)");
+            AppendOutput($"Алгоритм Прима");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"Рёбра МОД ({mst.Count} шт.):");
+            AppendOutput("");
+
+            foreach (var edge in mst.OrderBy(e => e.W))
             {
-                txtLab6Output.AppendText($"  {edge.U} -- {edge.V} ({edge.W})\n");
+                AppendOutput($"  {edge.U,-25} — {edge.V,-25} : {edge.W}");
             }
 
-            // Вариант 17: Ближайшая больница
-            string start = txtLab6Start.Text.Trim();
-            string hospitalsInput = txtLab6Hospitals.Text.Trim();
-
-            if (_graph.HasVertex(start) && !string.IsNullOrEmpty(hospitalsInput))
-            {
-                var hospitalsSet = new HashSet<string>(hospitalsInput.Split(',').Select(h => h.Trim()));
-                var (nearest, path, time) = Algorithms.FindNearestHospital(_graph, start, hospitalsSet);
-
-                txtLab6Output.AppendText($"\n[Вариант 17] Ближайшая больница к '{start}':\n");
-                if (time >= 0)
-                {
-                    txtLab6Output.AppendText($"  Больница: {nearest}\n");
-                    txtLab6Output.AppendText($"  Время: {time} мин.\n");
-                    txtLab6Output.AppendText($"  Маршрут: {string.Join(" -> ", path)}\n");
-                }
-                else
-                {
-                    txtLab6Output.AppendText("  Не найдено\n");
-                }
-            }
-
-            txtLab6Output.AppendText($"\n⏱ Время выполнения: {sw.ElapsedMilliseconds} мс");
-
-            // Подсветка МОД
-            _highlightPath.Clear();
-            _highlightEdges = mst.Select(edge => (edge.U, edge.V)).ToList();
-            RefreshAllGraphs();
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"Суммарный вес МОД: {totalWeight}");
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
-        // ==================== СРАВНЕНИЕ ====================
-
-        private void btnCompare_Click(object sender, EventArgs e)
+        private void btnConnectedComponents_Click(object sender, EventArgs e)
         {
             if (_graph.Vertices.Count == 0)
             {
-                MessageBox.Show("Сначала загрузите граф!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string start = txtCompareStart.Text.Trim();
-            string target = txtCompareTarget.Text.Trim();
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
 
-            if (!_graph.HasVertex(start) || !_graph.HasVertex(target))
+            var components = Algorithms.GetConnectedComponents(_graph);
+
+            stopwatch.Stop();
+
+            AppendOutput($"Компоненты связности графа");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"Количество компонент: {components.Count}");
+            AppendOutput("");
+
+            for (int i = 0; i < components.Count; i++)
             {
-                MessageBox.Show("Обе вершины должны существовать!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                AppendOutput($"Компонента {i + 1} ({components[i].Count} вершин):");
+                AppendOutput($"  {string.Join(", ", components[i].OrderBy(v => v))}");
+                AppendOutput("");
+            }
+
+            if (components.Count == 1)
+            {
+                AppendOutput("✅ Граф связный (одна компонента)");
+            }
+            else
+            {
+                AppendOutput("⚠️ Граф несвязный (несколько компонент)");
+            }
+
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
+        }
+
+        private void btnVariantTask_Click(object sender, EventArgs e)
+        {
+            // Вариант 3: Дорожная сеть района
+            // Задача: найти кратчайший маршрут между двумя точками
+
+            if (_graph.Vertices.Count == 0)
+            {
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            dgvCompare.Rows.Clear();
+            string start = cmbVariantStart.SelectedItem?.ToString();
+            string target = cmbVariantTarget.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(target)) return;
+
+            ClearOutput();
+            var stopwatch = Stopwatch.StartNew();
+
+            var (distances, parents) = Algorithms.Dijkstra(_graph, start);
+            var path = Algorithms.ReconstructPath(parents, target);
+
+            stopwatch.Stop();
+
+            AppendOutput($"ЗАДАЧА ВАРИАНТА 3");
+            AppendOutput($"Дорожная сеть района");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput($"Найти кратчайший маршрут между двумя точками");
+            AppendOutput("");
+            AppendOutput($"От: {start}");
+            AppendOutput($"До: {target}");
+            AppendOutput("");
+
+            if (distances[target] == int.MaxValue)
+            {
+                AppendOutput($"❌ Маршрут не найден");
+            }
+            else
+            {
+                AppendOutput($"✅ Кратчайший маршрут:");
+                AppendOutput("");
+
+                for (int i = 0; i < path.Count; i++)
+                {
+                    if (i > 0)
+                    {
+                        AppendOutput("        ↓");
+                    }
+                    AppendOutput($"  {i + 1}. {path[i]}");
+                }
+
+                AppendOutput("");
+                AppendOutput(new string('─', 60));
+                AppendOutput($"Длина маршрута: {distances[target]} км");
+                AppendOutput($"Количество перекрёстков: {path.Count}");
+                AppendOutput($"Количество дорог: {path.Count - 1}");
+            }
+
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
+        }
+
+        private void btnClearOutput_Click(object sender, EventArgs e)
+        {
+            ClearOutput();
+        }
+
+        private void btnExperiment_Click(object sender, EventArgs e)
+        {
+            if (_graph.Vertices.Count == 0)
+            {
+                MessageBox.Show("Сначала загрузите граф!", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            ClearOutput();
+
+            AppendOutput($"ЭКСПЕРИМЕНТ: Сравнение алгоритмов");
+            AppendOutput(new string('═', 60));
+            AppendOutput("");
+            AppendOutput($"Размер графа: {_graph.Vertices.Count} вершин, {_graph.EdgeCount} рёбер");
+            AppendOutput("");
+
+            string start = _graph.Vertices.First();
+            string target = _graph.Vertices.Skip(Math.Min(5, _graph.Vertices.Count - 1)).First();
 
             // BFS
-            var sw1 = Stopwatch.StartNew();
-            var bfsPath = Algorithms.BFS(_graph, start);
-            int bfsIndex = bfsPath.IndexOf(target);
-            var bfsResultPath = bfsIndex >= 0 ? string.Join(" -> ", bfsPath.Take(bfsIndex + 1)) : "Не найден";
-            sw1.Stop();
+            var swBFS = Stopwatch.StartNew();
+            Algorithms.BFS(_graph, start);
+            swBFS.Stop();
 
-            dgvCompare.Rows.Add("BFS", sw1.ElapsedMilliseconds,
-                bfsIndex >= 0 ? $"{bfsIndex} переходов" : "Недостижима",
-                bfsResultPath);
+            // DFS
+            var swDFS = Stopwatch.StartNew();
+            Algorithms.DFS(_graph, start);
+            swDFS.Stop();
 
             // Dijkstra
-            var sw2 = Stopwatch.StartNew();
-            var (dist, parents) = Algorithms.Dijkstra(_graph, start);
-            var dPath = Algorithms.ReconstructPath(parents, target);
-            sw2.Stop();
+            var swDijkstra = Stopwatch.StartNew();
+            Algorithms.Dijkstra(_graph, start);
+            swDijkstra.Stop();
 
-            dgvCompare.Rows.Add("Дейкстра", sw2.ElapsedMilliseconds,
-                dist[target] == int.MaxValue ? "Недостижима" : $"{dist[target]} ед.",
-                string.Join(" -> ", dPath));
+            AppendOutput($"Результаты:");
+            AppendOutput("");
+            AppendOutput($"  BFS:       {swBFS.ElapsedMilliseconds,5} мс");
+            AppendOutput($"  DFS:       {swDFS.ElapsedMilliseconds,5} мс");
+            AppendOutput($"  Дейкстра:  {swDijkstra.ElapsedMilliseconds,5} мс");
+            AppendOutput("");
+            AppendOutput(new string('─', 60));
+            AppendOutput("");
+            AppendOutput("💡 Вывод:");
+            AppendOutput("  • BFS и DFS работают за O(V+E)");
+            AppendOutput("  • Дейкстра медленнее: O((V+E) log V)");
+            AppendOutput("  • При увеличении графа разница растёт");
         }
 
-        // ==================== PAINT EVENTS ====================
-
-        private void pnlGraphMain_Paint(object sender, PaintEventArgs e)
+        private void lblDijkstraRouteStart_Click(object sender, EventArgs e)
         {
-            DrawGraph(e.Graphics, pnlGraphMain.Width, pnlGraphMain.Height);
+
         }
 
-        private void pnlGraphLab4_Paint(object sender, PaintEventArgs e)
+        private void cmbVariantStart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DrawGraph(e.Graphics, pnlGraphLab4.Width, pnlGraphLab4.Height);
-        }
 
-        private void pnlGraphLab5_Paint(object sender, PaintEventArgs e)
-        {
-            DrawGraph(e.Graphics, pnlGraphLab5.Width, pnlGraphLab5.Height);
-        }
-
-        private void pnlGraphLab6_Paint(object sender, PaintEventArgs e)
-        {
-            DrawGraph(e.Graphics, pnlGraphLab6.Width, pnlGraphLab6.Height);
         }
     }
 }

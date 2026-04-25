@@ -15,611 +15,629 @@
 
         private void InitializeComponent()
         {
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPageLoad = new System.Windows.Forms.TabPage();
-            this.pnlGraphMain = new System.Windows.Forms.Panel();
-            this.btnRedrawGraph = new System.Windows.Forms.Button();
-            this.chkShowWeights = new System.Windows.Forms.CheckBox();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.btnBrowseFile = new System.Windows.Forms.Button();
-            this.btnLoadGraph = new System.Windows.Forms.Button();
-            this.txtFilePath = new System.Windows.Forms.TextBox();
-            this.lblFilePath = new System.Windows.Forms.Label();
-            this.tabPageLab4 = new System.Windows.Forms.TabPage();
-            this.pnlGraphLab4 = new System.Windows.Forms.Panel();
-            this.txtLab4Output = new System.Windows.Forms.TextBox();
-            this.btnLab4Run = new System.Windows.Forms.Button();
-            this.txtLab4Target = new System.Windows.Forms.TextBox();
-            this.lblLab4Target = new System.Windows.Forms.Label();
-            this.txtLab4Start = new System.Windows.Forms.TextBox();
-            this.lblLab4Start = new System.Windows.Forms.Label();
-            this.tabPageLab5 = new System.Windows.Forms.TabPage();
-            this.pnlGraphLab5 = new System.Windows.Forms.Panel();
-            this.txtLab5Output = new System.Windows.Forms.TextBox();
-            this.btnLab5Run = new System.Windows.Forms.Button();
-            this.txtLab5Target = new System.Windows.Forms.TextBox();
-            this.lblLab5Target = new System.Windows.Forms.Label();
-            this.txtLab5Start = new System.Windows.Forms.TextBox();
-            this.lblLab5Start = new System.Windows.Forms.Label();
-            this.tabPageLab6 = new System.Windows.Forms.TabPage();
-            this.pnlGraphLab6 = new System.Windows.Forms.Panel();
-            this.txtLab6Output = new System.Windows.Forms.TextBox();
-            this.btnLab6Run = new System.Windows.Forms.Button();
-            this.txtLab6Hospitals = new System.Windows.Forms.TextBox();
-            this.lblLab6Hospitals = new System.Windows.Forms.Label();
-            this.txtLab6Start = new System.Windows.Forms.TextBox();
-            this.lblLab6Start = new System.Windows.Forms.Label();
-            this.tabPageCompare = new System.Windows.Forms.TabPage();
-            this.dgvCompare = new System.Windows.Forms.DataGridView();
-            this.btnCompare = new System.Windows.Forms.Button();
-            this.txtCompareTarget = new System.Windows.Forms.TextBox();
-            this.lblCompareTarget = new System.Windows.Forms.Label();
-            this.txtCompareStart = new System.Windows.Forms.TextBox();
-            this.lblCompareStart = new System.Windows.Forms.Label();
-            this.colAlgo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colResult = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl.SuspendLayout();
-            this.tabPageLoad.SuspendLayout();
-            this.tabPageLab4.SuspendLayout();
-            this.tabPageLab5.SuspendLayout();
-            this.tabPageLab6.SuspendLayout();
-            this.tabPageCompare.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCompare)).BeginInit();
-            this.SuspendLayout();
+            splitContainer1 = new SplitContainer();
+            groupBoxVariantTask = new GroupBox();
+            btnVariantTask = new Button();
+            cmbVariantTarget = new ComboBox();
+            lblVariantTarget = new Label();
+            cmbVariantStart = new ComboBox();
+            groupBoxAnalysis = new GroupBox();
+            btnExperiment = new Button();
+            btnClearOutput = new Button();
+            btnConnectedComponents = new Button();
+            btnMST = new Button();
+            btnArticulationPoints = new Button();
+            groupBoxDijkstraRoute = new GroupBox();
+            btnFindRoute = new Button();
+            cmbDijkstraRouteTarget = new ComboBox();
+            lblDijkstraRouteTarget = new Label();
+            cmbDijkstraRouteStart = new ComboBox();
+            groupBoxDijkstra = new GroupBox();
+            btnDijkstraAll = new Button();
+            cmbDijkstraSource = new ComboBox();
+            lblDijkstraSource = new Label();
+            groupBoxConnectivity = new GroupBox();
+            btnCheckConnectivity = new Button();
+            cmbConnectivityTarget = new ComboBox();
+            lblConnectivityTarget = new Label();
+            cmbConnectivityStart = new ComboBox();
+            lblConnectivityStart = new Label();
+            groupBoxDFS = new GroupBox();
+            btnDFS = new Button();
+            cmbDFSStart = new ComboBox();
+            groupBoxBFS = new GroupBox();
+            btnBFS = new Button();
+            cmbBFSStart = new ComboBox();
+            btnLoadGraph = new Button();
+            lblTitle = new Label();
+            txtOutput = new TextBox();
+            lblResults = new Label();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            groupBoxVariantTask.SuspendLayout();
+            groupBoxAnalysis.SuspendLayout();
+            groupBoxDijkstraRoute.SuspendLayout();
+            groupBoxDijkstra.SuspendLayout();
+            groupBoxConnectivity.SuspendLayout();
+            groupBoxDFS.SuspendLayout();
+            groupBoxBFS.SuspendLayout();
+            SuspendLayout();
             // 
-            // tabControl
+            // splitContainer1
             // 
-            this.tabControl.Controls.Add(this.tabPageLoad);
-            this.tabControl.Controls.Add(this.tabPageLab4);
-            this.tabControl.Controls.Add(this.tabPageLab5);
-            this.tabControl.Controls.Add(this.tabPageLab6);
-            this.tabControl.Controls.Add(this.tabPageCompare);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1000, 700);
-            this.tabControl.TabIndex = 0;
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Margin = new Padding(3, 4, 3, 4);
+            splitContainer1.Name = "splitContainer1";
             // 
-            // tabPageLoad
+            // splitContainer1.Panel1
             // 
-            this.tabPageLoad.Controls.Add(this.pnlGraphMain);
-            this.tabPageLoad.Controls.Add(this.btnRedrawGraph);
-            this.tabPageLoad.Controls.Add(this.chkShowWeights);
-            this.tabPageLoad.Controls.Add(this.lblStatus);
-            this.tabPageLoad.Controls.Add(this.btnBrowseFile);
-            this.tabPageLoad.Controls.Add(this.btnLoadGraph);
-            this.tabPageLoad.Controls.Add(this.txtFilePath);
-            this.tabPageLoad.Controls.Add(this.lblFilePath);
-            this.tabPageLoad.Location = new System.Drawing.Point(4, 29);
-            this.tabPageLoad.Name = "tabPageLoad";
-            this.tabPageLoad.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLoad.Size = new System.Drawing.Size(992, 667);
-            this.tabPageLoad.TabIndex = 0;
-            this.tabPageLoad.Text = "1. Загрузка графа";
-            this.tabPageLoad.UseVisualStyleBackColor = true;
+            splitContainer1.Panel1.Controls.Add(groupBoxVariantTask);
+            splitContainer1.Panel1.Controls.Add(groupBoxAnalysis);
+            splitContainer1.Panel1.Controls.Add(groupBoxDijkstraRoute);
+            splitContainer1.Panel1.Controls.Add(groupBoxDijkstra);
+            splitContainer1.Panel1.Controls.Add(groupBoxConnectivity);
+            splitContainer1.Panel1.Controls.Add(groupBoxDFS);
+            splitContainer1.Panel1.Controls.Add(groupBoxBFS);
+            splitContainer1.Panel1.Controls.Add(btnLoadGraph);
+            splitContainer1.Panel1.Controls.Add(lblTitle);
+            splitContainer1.Panel1.Padding = new Padding(11, 13, 11, 13);
             // 
-            // pnlGraphMain
+            // splitContainer1.Panel2
             // 
-            this.pnlGraphMain.BackColor = System.Drawing.Color.White;
-            this.pnlGraphMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlGraphMain.Location = new System.Drawing.Point(20, 130);
-            this.pnlGraphMain.Name = "pnlGraphMain";
-            this.pnlGraphMain.Size = new System.Drawing.Size(950, 510);
-            this.pnlGraphMain.TabIndex = 7;
-            this.pnlGraphMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlGraphMain_Paint);
+            splitContainer1.Panel2.Controls.Add(txtOutput);
+            splitContainer1.Panel2.Controls.Add(lblResults);
+            splitContainer1.Panel2.Padding = new Padding(11, 13, 11, 13);
+            splitContainer1.Size = new Size(1371, 933);
+            splitContainer1.SplitterDistance = 628;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 0;
             // 
-            // btnRedrawGraph
+            // groupBoxVariantTask
             // 
-            this.btnRedrawGraph.Location = new System.Drawing.Point(200, 90);
-            this.btnRedrawGraph.Name = "btnRedrawGraph";
-            this.btnRedrawGraph.Size = new System.Drawing.Size(120, 30);
-            this.btnRedrawGraph.TabIndex = 6;
-            this.btnRedrawGraph.Text = "Обновить вид";
-            this.btnRedrawGraph.UseVisualStyleBackColor = true;
-            this.btnRedrawGraph.Click += new System.EventHandler(this.btnRedrawGraph_Click);
+            groupBoxVariantTask.Controls.Add(btnVariantTask);
+            groupBoxVariantTask.Controls.Add(cmbVariantTarget);
+            groupBoxVariantTask.Controls.Add(lblVariantTarget);
+            groupBoxVariantTask.Controls.Add(cmbVariantStart);
+            groupBoxVariantTask.Dock = DockStyle.Top;
+            groupBoxVariantTask.Location = new Point(11, 898);
+            groupBoxVariantTask.Margin = new Padding(3, 4, 3, 4);
+            groupBoxVariantTask.Name = "groupBoxVariantTask";
+            groupBoxVariantTask.Padding = new Padding(3, 4, 3, 4);
+            groupBoxVariantTask.Size = new Size(606, 127);
+            groupBoxVariantTask.TabIndex = 8;
+            groupBoxVariantTask.TabStop = false;
+            groupBoxVariantTask.Text = "Задача варианта — из:";
             // 
-            // chkShowWeights
+            // btnVariantTask
             // 
-            this.chkShowWeights.AutoSize = true;
-            this.chkShowWeights.Location = new System.Drawing.Point(20, 95);
-            this.chkShowWeights.Name = "chkShowWeights";
-            this.chkShowWeights.Size = new System.Drawing.Size(164, 21);
-            this.chkShowWeights.TabIndex = 5;
-            this.chkShowWeights.Text = "Показать веса рёбер";
-            this.chkShowWeights.UseVisualStyleBackColor = true;
-            this.chkShowWeights.CheckedChanged += new System.EventHandler(this.chkShowWeights_CheckedChanged);
+            btnVariantTask.BackColor = Color.FromArgb(75, 0, 130);
+            btnVariantTask.FlatAppearance.BorderSize = 0;
+            btnVariantTask.FlatStyle = FlatStyle.Flat;
+            btnVariantTask.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnVariantTask.ForeColor = Color.White;
+            btnVariantTask.Location = new Point(171, 73);
+            btnVariantTask.Margin = new Padding(3, 4, 3, 4);
+            btnVariantTask.Name = "btnVariantTask";
+            btnVariantTask.Size = new Size(263, 40);
+            btnVariantTask.TabIndex = 3;
+            btnVariantTask.Text = "Кратчайший маршрут (вар. 3)";
+            btnVariantTask.UseVisualStyleBackColor = false;
+            btnVariantTask.Click += btnVariantTask_Click;
             // 
-            // lblStatus
+            // cmbVariantTarget
             // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblStatus.Location = new System.Drawing.Point(20, 60);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(143, 20);
-            this.lblStatus.TabIndex = 4;
-            this.lblStatus.Text = "Статус: Не загружен";
+            cmbVariantTarget.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbVariantTarget.FormattingEnabled = true;
+            cmbVariantTarget.Location = new Point(171, 37);
+            cmbVariantTarget.Margin = new Padding(3, 4, 3, 4);
+            cmbVariantTarget.Name = "cmbVariantTarget";
+            cmbVariantTarget.Size = new Size(262, 28);
+            cmbVariantTarget.TabIndex = 2;
             // 
-            // btnBrowseFile
+            // lblVariantTarget
             // 
-            this.btnBrowseFile.Location = new System.Drawing.Point(770, 15);
-            this.btnBrowseFile.Name = "btnBrowseFile";
-            this.btnBrowseFile.Size = new System.Drawing.Size(100, 30);
-            this.btnBrowseFile.TabIndex = 3;
-            this.btnBrowseFile.Text = "Обзор...";
-            this.btnBrowseFile.UseVisualStyleBackColor = true;
-            this.btnBrowseFile.Click += new System.EventHandler(this.btnBrowseFile_Click);
+            lblVariantTarget.AutoSize = true;
+            lblVariantTarget.Location = new Point(7, 41);
+            lblVariantTarget.Name = "lblVariantTarget";
+            lblVariantTarget.Size = new Size(87, 20);
+            lblVariantTarget.TabIndex = 1;
+            lblVariantTarget.Text = "В вершину:";
+            // 
+            // cmbVariantStart
+            // 
+            cmbVariantStart.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbVariantStart.FormattingEnabled = true;
+            cmbVariantStart.Location = new Point(172, 0);
+            cmbVariantStart.Margin = new Padding(3, 4, 3, 4);
+            cmbVariantStart.Name = "cmbVariantStart";
+            cmbVariantStart.Size = new Size(262, 28);
+            cmbVariantStart.TabIndex = 0;
+            cmbVariantStart.SelectedIndexChanged += cmbVariantStart_SelectedIndexChanged;
+            // 
+            // groupBoxAnalysis
+            // 
+            groupBoxAnalysis.Controls.Add(btnExperiment);
+            groupBoxAnalysis.Controls.Add(btnClearOutput);
+            groupBoxAnalysis.Controls.Add(btnConnectedComponents);
+            groupBoxAnalysis.Controls.Add(btnMST);
+            groupBoxAnalysis.Controls.Add(btnArticulationPoints);
+            groupBoxAnalysis.Dock = DockStyle.Top;
+            groupBoxAnalysis.Location = new Point(11, 618);
+            groupBoxAnalysis.Margin = new Padding(3, 4, 3, 4);
+            groupBoxAnalysis.Name = "groupBoxAnalysis";
+            groupBoxAnalysis.Padding = new Padding(3, 4, 3, 4);
+            groupBoxAnalysis.Size = new Size(606, 280);
+            groupBoxAnalysis.TabIndex = 7;
+            groupBoxAnalysis.TabStop = false;
+            groupBoxAnalysis.Text = "Анализ графа";
+            // 
+            // btnExperiment
+            // 
+            btnExperiment.BackColor = Color.FromArgb(40, 40, 40);
+            btnExperiment.FlatAppearance.BorderSize = 0;
+            btnExperiment.FlatStyle = FlatStyle.Flat;
+            btnExperiment.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnExperiment.ForeColor = Color.White;
+            btnExperiment.Location = new Point(171, 227);
+            btnExperiment.Margin = new Padding(3, 4, 3, 4);
+            btnExperiment.Name = "btnExperiment";
+            btnExperiment.Size = new Size(263, 40);
+            btnExperiment.TabIndex = 4;
+            btnExperiment.Text = "⏱ Эксперимент (15–50 вершин)";
+            btnExperiment.UseVisualStyleBackColor = false;
+            btnExperiment.Click += btnExperiment_Click;
+            // 
+            // btnClearOutput
+            // 
+            btnClearOutput.BackColor = Color.FromArgb(80, 80, 80);
+            btnClearOutput.FlatAppearance.BorderSize = 0;
+            btnClearOutput.FlatStyle = FlatStyle.Flat;
+            btnClearOutput.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnClearOutput.ForeColor = Color.White;
+            btnClearOutput.Location = new Point(171, 179);
+            btnClearOutput.Margin = new Padding(3, 4, 3, 4);
+            btnClearOutput.Name = "btnClearOutput";
+            btnClearOutput.Size = new Size(263, 40);
+            btnClearOutput.TabIndex = 3;
+            btnClearOutput.Text = "Очистить вывод";
+            btnClearOutput.UseVisualStyleBackColor = false;
+            btnClearOutput.Click += btnClearOutput_Click;
+            // 
+            // btnConnectedComponents
+            // 
+            btnConnectedComponents.BackColor = Color.FromArgb(255, 165, 0);
+            btnConnectedComponents.FlatAppearance.BorderSize = 0;
+            btnConnectedComponents.FlatStyle = FlatStyle.Flat;
+            btnConnectedComponents.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnConnectedComponents.ForeColor = Color.White;
+            btnConnectedComponents.Location = new Point(171, 131);
+            btnConnectedComponents.Margin = new Padding(3, 4, 3, 4);
+            btnConnectedComponents.Name = "btnConnectedComponents";
+            btnConnectedComponents.Size = new Size(263, 40);
+            btnConnectedComponents.TabIndex = 2;
+            btnConnectedComponents.Text = "Компоненты связности";
+            btnConnectedComponents.UseVisualStyleBackColor = false;
+            btnConnectedComponents.Click += btnConnectedComponents_Click;
+            // 
+            // btnMST
+            // 
+            btnMST.BackColor = Color.FromArgb(0, 128, 128);
+            btnMST.FlatAppearance.BorderSize = 0;
+            btnMST.FlatStyle = FlatStyle.Flat;
+            btnMST.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnMST.ForeColor = Color.White;
+            btnMST.Location = new Point(171, 83);
+            btnMST.Margin = new Padding(3, 4, 3, 4);
+            btnMST.Name = "btnMST";
+            btnMST.Size = new Size(263, 40);
+            btnMST.TabIndex = 1;
+            btnMST.Text = "МОД — алгоритм Прима";
+            btnMST.UseVisualStyleBackColor = false;
+            btnMST.Click += btnMST_Click;
+            // 
+            // btnArticulationPoints
+            // 
+            btnArticulationPoints.BackColor = Color.FromArgb(220, 53, 69);
+            btnArticulationPoints.FlatAppearance.BorderSize = 0;
+            btnArticulationPoints.FlatStyle = FlatStyle.Flat;
+            btnArticulationPoints.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnArticulationPoints.ForeColor = Color.White;
+            btnArticulationPoints.Location = new Point(171, 35);
+            btnArticulationPoints.Margin = new Padding(3, 4, 3, 4);
+            btnArticulationPoints.Name = "btnArticulationPoints";
+            btnArticulationPoints.Size = new Size(263, 40);
+            btnArticulationPoints.TabIndex = 0;
+            btnArticulationPoints.Text = "Точки сочленения";
+            btnArticulationPoints.UseVisualStyleBackColor = false;
+            btnArticulationPoints.Click += btnArticulationPoints_Click;
+            // 
+            // groupBoxDijkstraRoute
+            // 
+            groupBoxDijkstraRoute.Controls.Add(btnFindRoute);
+            groupBoxDijkstraRoute.Controls.Add(cmbDijkstraRouteTarget);
+            groupBoxDijkstraRoute.Controls.Add(lblDijkstraRouteTarget);
+            groupBoxDijkstraRoute.Controls.Add(cmbDijkstraRouteStart);
+            groupBoxDijkstraRoute.Dock = DockStyle.Top;
+            groupBoxDijkstraRoute.Location = new Point(11, 511);
+            groupBoxDijkstraRoute.Margin = new Padding(3, 4, 3, 4);
+            groupBoxDijkstraRoute.Name = "groupBoxDijkstraRoute";
+            groupBoxDijkstraRoute.Padding = new Padding(3, 4, 3, 4);
+            groupBoxDijkstraRoute.Size = new Size(606, 107);
+            groupBoxDijkstraRoute.TabIndex = 6;
+            groupBoxDijkstraRoute.TabStop = false;
+            groupBoxDijkstraRoute.Text = "Маршрут — из вершины:";
+            // 
+            // btnFindRoute
+            // 
+            btnFindRoute.BackColor = Color.FromArgb(111, 66, 193);
+            btnFindRoute.FlatAppearance.BorderSize = 0;
+            btnFindRoute.FlatStyle = FlatStyle.Flat;
+            btnFindRoute.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnFindRoute.ForeColor = Color.White;
+            btnFindRoute.Location = new Point(14, 55);
+            btnFindRoute.Margin = new Padding(3, 4, 3, 4);
+            btnFindRoute.Name = "btnFindRoute";
+            btnFindRoute.Size = new Size(225, 40);
+            btnFindRoute.TabIndex = 3;
+            btnFindRoute.Text = "Найти кратчайший маршрут";
+            btnFindRoute.UseVisualStyleBackColor = false;
+            btnFindRoute.Click += btnFindRoute_Click;
+            // 
+            // cmbDijkstraRouteTarget
+            // 
+            cmbDijkstraRouteTarget.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbDijkstraRouteTarget.FormattingEnabled = true;
+            cmbDijkstraRouteTarget.Location = new Point(338, 59);
+            cmbDijkstraRouteTarget.Margin = new Padding(3, 4, 3, 4);
+            cmbDijkstraRouteTarget.Name = "cmbDijkstraRouteTarget";
+            cmbDijkstraRouteTarget.Size = new Size(262, 28);
+            cmbDijkstraRouteTarget.TabIndex = 2;
+            // 
+            // lblDijkstraRouteTarget
+            // 
+            lblDijkstraRouteTarget.AutoSize = true;
+            lblDijkstraRouteTarget.Location = new Point(245, 59);
+            lblDijkstraRouteTarget.Name = "lblDijkstraRouteTarget";
+            lblDijkstraRouteTarget.Size = new Size(87, 20);
+            lblDijkstraRouteTarget.TabIndex = 1;
+            lblDijkstraRouteTarget.Text = "В вершину:";
+            // 
+            // cmbDijkstraRouteStart
+            // 
+            cmbDijkstraRouteStart.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbDijkstraRouteStart.FormattingEnabled = true;
+            cmbDijkstraRouteStart.Location = new Point(202, 8);
+            cmbDijkstraRouteStart.Margin = new Padding(3, 4, 3, 4);
+            cmbDijkstraRouteStart.Name = "cmbDijkstraRouteStart";
+            cmbDijkstraRouteStart.Size = new Size(262, 28);
+            cmbDijkstraRouteStart.TabIndex = 0;
+            // 
+            // groupBoxDijkstra
+            // 
+            groupBoxDijkstra.Controls.Add(btnDijkstraAll);
+            groupBoxDijkstra.Controls.Add(cmbDijkstraSource);
+            groupBoxDijkstra.Controls.Add(lblDijkstraSource);
+            groupBoxDijkstra.Dock = DockStyle.Top;
+            groupBoxDijkstra.Location = new Point(11, 404);
+            groupBoxDijkstra.Margin = new Padding(3, 4, 3, 4);
+            groupBoxDijkstra.Name = "groupBoxDijkstra";
+            groupBoxDijkstra.Padding = new Padding(3, 4, 3, 4);
+            groupBoxDijkstra.Size = new Size(606, 107);
+            groupBoxDijkstra.TabIndex = 5;
+            groupBoxDijkstra.TabStop = false;
+            groupBoxDijkstra.Text = "Дейкстра — кратчайшие пути";
+            // 
+            // btnDijkstraAll
+            // 
+            btnDijkstraAll.BackColor = Color.FromArgb(111, 66, 193);
+            btnDijkstraAll.FlatAppearance.BorderSize = 0;
+            btnDijkstraAll.FlatStyle = FlatStyle.Flat;
+            btnDijkstraAll.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnDijkstraAll.ForeColor = Color.White;
+            btnDijkstraAll.Location = new Point(171, 60);
+            btnDijkstraAll.Margin = new Padding(3, 4, 3, 4);
+            btnDijkstraAll.Name = "btnDijkstraAll";
+            btnDijkstraAll.Size = new Size(263, 40);
+            btnDijkstraAll.TabIndex = 2;
+            btnDijkstraAll.Text = "Расстояния до всех вершин";
+            btnDijkstraAll.UseVisualStyleBackColor = false;
+            btnDijkstraAll.Click += btnDijkstraAll_Click;
+            // 
+            // cmbDijkstraSource
+            // 
+            cmbDijkstraSource.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbDijkstraSource.FormattingEnabled = true;
+            cmbDijkstraSource.Location = new Point(171, 27);
+            cmbDijkstraSource.Margin = new Padding(3, 4, 3, 4);
+            cmbDijkstraSource.Name = "cmbDijkstraSource";
+            cmbDijkstraSource.Size = new Size(262, 28);
+            cmbDijkstraSource.TabIndex = 1;
+            // 
+            // lblDijkstraSource
+            // 
+            lblDijkstraSource.AutoSize = true;
+            lblDijkstraSource.Location = new Point(7, 31);
+            lblDijkstraSource.Name = "lblDijkstraSource";
+            lblDijkstraSource.Size = new Size(115, 20);
+            lblDijkstraSource.TabIndex = 0;
+            lblDijkstraSource.Text = "Источник (все):";
+            // 
+            // groupBoxConnectivity
+            // 
+            groupBoxConnectivity.Controls.Add(btnCheckConnectivity);
+            groupBoxConnectivity.Controls.Add(cmbConnectivityTarget);
+            groupBoxConnectivity.Controls.Add(lblConnectivityTarget);
+            groupBoxConnectivity.Controls.Add(cmbConnectivityStart);
+            groupBoxConnectivity.Controls.Add(lblConnectivityStart);
+            groupBoxConnectivity.Dock = DockStyle.Top;
+            groupBoxConnectivity.Location = new Point(11, 294);
+            groupBoxConnectivity.Margin = new Padding(3, 4, 3, 4);
+            groupBoxConnectivity.Name = "groupBoxConnectivity";
+            groupBoxConnectivity.Padding = new Padding(3, 4, 3, 4);
+            groupBoxConnectivity.Size = new Size(606, 110);
+            groupBoxConnectivity.TabIndex = 4;
+            groupBoxConnectivity.TabStop = false;
+            groupBoxConnectivity.Text = "Проверка достижимости (BFS)";
+            // 
+            // btnCheckConnectivity
+            // 
+            btnCheckConnectivity.BackColor = Color.FromArgb(66, 153, 225);
+            btnCheckConnectivity.FlatAppearance.BorderSize = 0;
+            btnCheckConnectivity.FlatStyle = FlatStyle.Flat;
+            btnCheckConnectivity.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnCheckConnectivity.ForeColor = Color.White;
+            btnCheckConnectivity.Location = new Point(14, 55);
+            btnCheckConnectivity.Margin = new Padding(3, 4, 3, 4);
+            btnCheckConnectivity.Name = "btnCheckConnectivity";
+            btnCheckConnectivity.Size = new Size(225, 40);
+            btnCheckConnectivity.TabIndex = 3;
+            btnCheckConnectivity.Text = "Проверить достижимость";
+            btnCheckConnectivity.UseVisualStyleBackColor = false;
+            btnCheckConnectivity.Click += btnCheckConnectivity_Click;
+            // 
+            // cmbConnectivityTarget
+            // 
+            cmbConnectivityTarget.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbConnectivityTarget.FormattingEnabled = true;
+            cmbConnectivityTarget.Location = new Point(338, 44);
+            cmbConnectivityTarget.Margin = new Padding(3, 4, 3, 4);
+            cmbConnectivityTarget.Name = "cmbConnectivityTarget";
+            cmbConnectivityTarget.Size = new Size(262, 28);
+            cmbConnectivityTarget.TabIndex = 2;
+            // 
+            // lblConnectivityTarget
+            // 
+            lblConnectivityTarget.AutoSize = true;
+            lblConnectivityTarget.Location = new Point(245, 44);
+            lblConnectivityTarget.Name = "lblConnectivityTarget";
+            lblConnectivityTarget.Size = new Size(87, 20);
+            lblConnectivityTarget.TabIndex = 1;
+            lblConnectivityTarget.Text = "В вершину:";
+            // 
+            // cmbConnectivityStart
+            // 
+            cmbConnectivityStart.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbConnectivityStart.FormattingEnabled = true;
+            cmbConnectivityStart.Location = new Point(338, 11);
+            cmbConnectivityStart.Margin = new Padding(3, 4, 3, 4);
+            cmbConnectivityStart.Name = "cmbConnectivityStart";
+            cmbConnectivityStart.Size = new Size(262, 28);
+            cmbConnectivityStart.TabIndex = 0;
+            // 
+            // lblConnectivityStart
+            // 
+            lblConnectivityStart.AutoSize = true;
+            lblConnectivityStart.Location = new Point(300, 14);
+            lblConnectivityStart.Name = "lblConnectivityStart";
+            lblConnectivityStart.Size = new Size(27, 20);
+            lblConnectivityStart.TabIndex = 0;
+            lblConnectivityStart.Text = "Из";
+            // 
+            // groupBoxDFS
+            // 
+            groupBoxDFS.Controls.Add(btnDFS);
+            groupBoxDFS.Controls.Add(cmbDFSStart);
+            groupBoxDFS.Dock = DockStyle.Top;
+            groupBoxDFS.Location = new Point(11, 207);
+            groupBoxDFS.Margin = new Padding(3, 4, 3, 4);
+            groupBoxDFS.Name = "groupBoxDFS";
+            groupBoxDFS.Padding = new Padding(3, 4, 3, 4);
+            groupBoxDFS.Size = new Size(606, 87);
+            groupBoxDFS.TabIndex = 3;
+            groupBoxDFS.TabStop = false;
+            groupBoxDFS.Text = "DFS — обход в глубину";
+            // 
+            // btnDFS
+            // 
+            btnDFS.BackColor = Color.FromArgb(92, 184, 92);
+            btnDFS.FlatAppearance.BorderSize = 0;
+            btnDFS.FlatStyle = FlatStyle.Flat;
+            btnDFS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnDFS.ForeColor = Color.White;
+            btnDFS.Location = new Point(301, 39);
+            btnDFS.Margin = new Padding(3, 4, 3, 4);
+            btnDFS.Name = "btnDFS";
+            btnDFS.Size = new Size(263, 40);
+            btnDFS.TabIndex = 2;
+            btnDFS.Text = "Запустить DFS";
+            btnDFS.UseVisualStyleBackColor = false;
+            btnDFS.Click += btnDFS_Click;
+            // 
+            // cmbDFSStart
+            // 
+            cmbDFSStart.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbDFSStart.FormattingEnabled = true;
+            cmbDFSStart.Location = new Point(301, 8);
+            cmbDFSStart.Margin = new Padding(3, 4, 3, 4);
+            cmbDFSStart.Name = "cmbDFSStart";
+            cmbDFSStart.Size = new Size(262, 28);
+            cmbDFSStart.TabIndex = 1;
+            // 
+            // groupBoxBFS
+            // 
+            groupBoxBFS.Controls.Add(btnBFS);
+            groupBoxBFS.Controls.Add(cmbBFSStart);
+            groupBoxBFS.Dock = DockStyle.Top;
+            groupBoxBFS.Location = new Point(11, 120);
+            groupBoxBFS.Margin = new Padding(3, 4, 3, 4);
+            groupBoxBFS.Name = "groupBoxBFS";
+            groupBoxBFS.Padding = new Padding(3, 4, 3, 4);
+            groupBoxBFS.Size = new Size(606, 87);
+            groupBoxBFS.TabIndex = 2;
+            groupBoxBFS.TabStop = false;
+            groupBoxBFS.Text = "BFS — обход в ширину";
+            // 
+            // btnBFS
+            // 
+            btnBFS.BackColor = Color.FromArgb(92, 184, 92);
+            btnBFS.FlatAppearance.BorderSize = 0;
+            btnBFS.FlatStyle = FlatStyle.Flat;
+            btnBFS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnBFS.ForeColor = Color.White;
+            btnBFS.Location = new Point(300, 46);
+            btnBFS.Margin = new Padding(3, 4, 3, 4);
+            btnBFS.Name = "btnBFS";
+            btnBFS.Size = new Size(263, 40);
+            btnBFS.TabIndex = 2;
+            btnBFS.Text = "Запустить BFS";
+            btnBFS.UseVisualStyleBackColor = false;
+            btnBFS.Click += btnBFS_Click;
+            // 
+            // cmbBFSStart
+            // 
+            cmbBFSStart.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbBFSStart.FormattingEnabled = true;
+            cmbBFSStart.Location = new Point(300, 11);
+            cmbBFSStart.Margin = new Padding(3, 4, 3, 4);
+            cmbBFSStart.Name = "cmbBFSStart";
+            cmbBFSStart.Size = new Size(262, 28);
+            cmbBFSStart.TabIndex = 1;
             // 
             // btnLoadGraph
             // 
-            this.btnLoadGraph.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.btnLoadGraph.FlatAppearance.BorderSize = 0;
-            this.btnLoadGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoadGraph.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLoadGraph.ForeColor = System.Drawing.Color.White;
-            this.btnLoadGraph.Location = new System.Drawing.Point(640, 15);
-            this.btnLoadGraph.Name = "btnLoadGraph";
-            this.btnLoadGraph.Size = new System.Drawing.Size(120, 30);
-            this.btnLoadGraph.TabIndex = 2;
-            this.btnLoadGraph.Text = "Загрузить";
-            this.btnLoadGraph.UseVisualStyleBackColor = false;
-            this.btnLoadGraph.Click += new System.EventHandler(this.btnLoadGraph_Click);
-            // 
-            // txtFilePath
-            // 
-            this.txtFilePath.Location = new System.Drawing.Point(120, 17);
-            this.txtFilePath.Name = "txtFilePath";
-            this.txtFilePath.Size = new System.Drawing.Size(500, 25);
-            this.txtFilePath.TabIndex = 1;
-            this.txtFilePath.Text = "graph.txt";
-            // 
-            // lblFilePath
-            // 
-            this.lblFilePath.AutoSize = true;
-            this.lblFilePath.Location = new System.Drawing.Point(20, 20);
-            this.lblFilePath.Name = "lblFilePath";
-            this.lblFilePath.Size = new System.Drawing.Size(80, 19);
-            this.lblFilePath.TabIndex = 0;
-            this.lblFilePath.Text = "Файл графа:";
-            // 
-            // tabPageLab4
-            // 
-            this.tabPageLab4.Controls.Add(this.pnlGraphLab4);
-            this.tabPageLab4.Controls.Add(this.txtLab4Output);
-            this.tabPageLab4.Controls.Add(this.btnLab4Run);
-            this.tabPageLab4.Controls.Add(this.txtLab4Target);
-            this.tabPageLab4.Controls.Add(this.lblLab4Target);
-            this.tabPageLab4.Controls.Add(this.txtLab4Start);
-            this.tabPageLab4.Controls.Add(this.lblLab4Start);
-            this.tabPageLab4.Location = new System.Drawing.Point(4, 29);
-            this.tabPageLab4.Name = "tabPageLab4";
-            this.tabPageLab4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLab4.Size = new System.Drawing.Size(992, 667);
-            this.tabPageLab4.TabIndex = 1;
-            this.tabPageLab4.Text = "2. ЛР 4: Обход";
-            this.tabPageLab4.UseVisualStyleBackColor = true;
-            // 
-            // pnlGraphLab4
-            // 
-            this.pnlGraphLab4.BackColor = System.Drawing.Color.White;
-            this.pnlGraphLab4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlGraphLab4.Location = new System.Drawing.Point(20, 320);
-            this.pnlGraphLab4.Name = "pnlGraphLab4";
-            this.pnlGraphLab4.Size = new System.Drawing.Size(950, 320);
-            this.pnlGraphLab4.TabIndex = 8;
-            this.pnlGraphLab4.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlGraphLab4_Paint);
-            // 
-            // txtLab4Output
-            // 
-            this.txtLab4Output.Font = new System.Drawing.Font("Consolas", 10F);
-            this.txtLab4Output.Location = new System.Drawing.Point(20, 60);
-            this.txtLab4Output.Multiline = true;
-            this.txtLab4Output.Name = "txtLab4Output";
-            this.txtLab4Output.ReadOnly = true;
-            this.txtLab4Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLab4Output.Size = new System.Drawing.Size(950, 250);
-            this.txtLab4Output.TabIndex = 5;
-            // 
-            // btnLab4Run
-            // 
-            this.btnLab4Run.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.btnLab4Run.FlatAppearance.BorderSize = 0;
-            this.btnLab4Run.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLab4Run.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLab4Run.ForeColor = System.Drawing.Color.White;
-            this.btnLab4Run.Location = new System.Drawing.Point(480, 15);
-            this.btnLab4Run.Name = "btnLab4Run";
-            this.btnLab4Run.Size = new System.Drawing.Size(150, 30);
-            this.btnLab4Run.TabIndex = 4;
-            this.btnLab4Run.Text = "Запустить BFS/DFS";
-            this.btnLab4Run.UseVisualStyleBackColor = false;
-            this.btnLab4Run.Click += new System.EventHandler(this.btnLab4Run_Click);
-            // 
-            // txtLab4Target
-            // 
-            this.txtLab4Target.Location = new System.Drawing.Point(310, 17);
-            this.txtLab4Target.Name = "txtLab4Target";
-            this.txtLab4Target.Size = new System.Drawing.Size(150, 25);
-            this.txtLab4Target.TabIndex = 3;
-            this.txtLab4Target.Text = "Hospital_South";
-            // 
-            // lblLab4Target
-            // 
-            this.lblLab4Target.AutoSize = true;
-            this.lblLab4Target.Location = new System.Drawing.Point(250, 20);
-            this.lblLab4Target.Name = "lblLab4Target";
-            this.lblLab4Target.Size = new System.Drawing.Size(40, 19);
-            this.lblLab4Target.TabIndex = 2;
-            this.lblLab4Target.Text = "Цель:";
-            // 
-            // txtLab4Start
-            // 
-            this.txtLab4Start.Location = new System.Drawing.Point(80, 17);
-            this.txtLab4Start.Name = "txtLab4Start";
-            this.txtLab4Start.Size = new System.Drawing.Size(150, 25);
-            this.txtLab4Start.TabIndex = 1;
-            this.txtLab4Start.Text = "Hospital_Central";
-            // 
-            // lblLab4Start
-            // 
-            this.lblLab4Start.AutoSize = true;
-            this.lblLab4Start.Location = new System.Drawing.Point(20, 20);
-            this.lblLab4Start.Name = "lblLab4Start";
-            this.lblLab4Start.Size = new System.Drawing.Size(46, 19);
-            this.lblLab4Start.TabIndex = 0;
-            this.lblLab4Start.Text = "Старт:";
-            // 
-            // tabPageLab5
-            // 
-            this.tabPageLab5.Controls.Add(this.pnlGraphLab5);
-            this.tabPageLab5.Controls.Add(this.txtLab5Output);
-            this.tabPageLab5.Controls.Add(this.btnLab5Run);
-            this.tabPageLab5.Controls.Add(this.txtLab5Target);
-            this.tabPageLab5.Controls.Add(this.lblLab5Target);
-            this.tabPageLab5.Controls.Add(this.txtLab5Start);
-            this.tabPageLab5.Controls.Add(this.lblLab5Start);
-            this.tabPageLab5.Location = new System.Drawing.Point(4, 29);
-            this.tabPageLab5.Name = "tabPageLab5";
-            this.tabPageLab5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLab5.Size = new System.Drawing.Size(992, 667);
-            this.tabPageLab5.TabIndex = 2;
-            this.tabPageLab5.Text = "3. ЛР 5: Дейкстра";
-            this.tabPageLab5.UseVisualStyleBackColor = true;
-            // 
-            // pnlGraphLab5
-            // 
-            this.pnlGraphLab5.BackColor = System.Drawing.Color.White;
-            this.pnlGraphLab5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlGraphLab5.Location = new System.Drawing.Point(20, 320);
-            this.pnlGraphLab5.Name = "pnlGraphLab5";
-            this.pnlGraphLab5.Size = new System.Drawing.Size(950, 320);
-            this.pnlGraphLab5.TabIndex = 9;
-            this.pnlGraphLab5.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlGraphLab5_Paint);
-            // 
-            // txtLab5Output
-            // 
-            this.txtLab5Output.Font = new System.Drawing.Font("Consolas", 10F);
-            this.txtLab5Output.Location = new System.Drawing.Point(20, 60);
-            this.txtLab5Output.Multiline = true;
-            this.txtLab5Output.Name = "txtLab5Output";
-            this.txtLab5Output.ReadOnly = true;
-            this.txtLab5Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLab5Output.Size = new System.Drawing.Size(950, 250);
-            this.txtLab5Output.TabIndex = 5;
-            // 
-            // btnLab5Run
-            // 
-            this.btnLab5Run.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.btnLab5Run.FlatAppearance.BorderSize = 0;
-            this.btnLab5Run.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLab5Run.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLab5Run.ForeColor = System.Drawing.Color.White;
-            this.btnLab5Run.Location = new System.Drawing.Point(480, 15);
-            this.btnLab5Run.Name = "btnLab5Run";
-            this.btnLab5Run.Size = new System.Drawing.Size(150, 30);
-            this.btnLab5Run.TabIndex = 4;
-            this.btnLab5Run.Text = "Запустить Дейкстру";
-            this.btnLab5Run.UseVisualStyleBackColor = false;
-            this.btnLab5Run.Click += new System.EventHandler(this.btnLab5Run_Click);
-            // 
-            // txtLab5Target
-            // 
-            this.txtLab5Target.Location = new System.Drawing.Point(310, 17);
-            this.txtLab5Target.Name = "txtLab5Target";
-            this.txtLab5Target.Size = new System.Drawing.Size(150, 25);
-            this.txtLab5Target.TabIndex = 3;
-            this.txtLab5Target.Text = "MedPoint_7";
-            // 
-            // lblLab5Target
-            // 
-            this.lblLab5Target.AutoSize = true;
-            this.lblLab5Target.Location = new System.Drawing.Point(250, 20);
-            this.lblLab5Target.Name = "lblLab5Target";
-            this.lblLab5Target.Size = new System.Drawing.Size(40, 19);
-            this.lblLab5Target.TabIndex = 2;
-            this.lblLab5Target.Text = "Цель:";
-            // 
-            // txtLab5Start
-            // 
-            this.txtLab5Start.Location = new System.Drawing.Point(80, 17);
-            this.txtLab5Start.Name = "txtLab5Start";
-            this.txtLab5Start.Size = new System.Drawing.Size(150, 25);
-            this.txtLab5Start.TabIndex = 1;
-            this.txtLab5Start.Text = "Hospital_Central";
-            // 
-            // lblLab5Start
-            // 
-            this.lblLab5Start.AutoSize = true;
-            this.lblLab5Start.Location = new System.Drawing.Point(20, 20);
-            this.lblLab5Start.Name = "lblLab5Start";
-            this.lblLab5Start.Size = new System.Drawing.Size(46, 19);
-            this.lblLab5Start.TabIndex = 0;
-            this.lblLab5Start.Text = "Старт:";
-            // 
-            // tabPageLab6
-            // 
-            this.tabPageLab6.Controls.Add(this.pnlGraphLab6);
-            this.tabPageLab6.Controls.Add(this.txtLab6Output);
-            this.tabPageLab6.Controls.Add(this.btnLab6Run);
-            this.tabPageLab6.Controls.Add(this.txtLab6Hospitals);
-            this.tabPageLab6.Controls.Add(this.lblLab6Hospitals);
-            this.tabPageLab6.Controls.Add(this.txtLab6Start);
-            this.tabPageLab6.Controls.Add(this.lblLab6Start);
-            this.tabPageLab6.Location = new System.Drawing.Point(4, 29);
-            this.tabPageLab6.Name = "tabPageLab6";
-            this.tabPageLab6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLab6.Size = new System.Drawing.Size(992, 667);
-            this.tabPageLab6.TabIndex = 3;
-            this.tabPageLab6.Text = "4. ЛР 6: Анализ";
-            this.tabPageLab6.UseVisualStyleBackColor = true;
-            // 
-            // pnlGraphLab6
-            // 
-            this.pnlGraphLab6.BackColor = System.Drawing.Color.White;
-            this.pnlGraphLab6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlGraphLab6.Location = new System.Drawing.Point(20, 320);
-            this.pnlGraphLab6.Name = "pnlGraphLab6";
-            this.pnlGraphLab6.Size = new System.Drawing.Size(950, 320);
-            this.pnlGraphLab6.TabIndex = 10;
-            this.pnlGraphLab6.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlGraphLab6_Paint);
-            // 
-            // txtLab6Output
-            // 
-            this.txtLab6Output.Font = new System.Drawing.Font("Consolas", 10F);
-            this.txtLab6Output.Location = new System.Drawing.Point(20, 60);
-            this.txtLab6Output.Multiline = true;
-            this.txtLab6Output.Name = "txtLab6Output";
-            this.txtLab6Output.ReadOnly = true;
-            this.txtLab6Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLab6Output.Size = new System.Drawing.Size(950, 250);
-            this.txtLab6Output.TabIndex = 5;
-            // 
-            // btnLab6Run
-            // 
-            this.btnLab6Run.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.btnLab6Run.FlatAppearance.BorderSize = 0;
-            this.btnLab6Run.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLab6Run.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLab6Run.ForeColor = System.Drawing.Color.White;
-            this.btnLab6Run.Location = new System.Drawing.Point(740, 15);
-            this.btnLab6Run.Name = "btnLab6Run";
-            this.btnLab6Run.Size = new System.Drawing.Size(200, 30);
-            this.btnLab6Run.TabIndex = 4;
-            this.btnLab6Run.Text = "Анализ (Точки/МОД)";
-            this.btnLab6Run.UseVisualStyleBackColor = false;
-            this.btnLab6Run.Click += new System.EventHandler(this.btnLab6Run_Click);
-            // 
-            // txtLab6Hospitals
-            // 
-            this.txtLab6Hospitals.Location = new System.Drawing.Point(420, 17);
-            this.txtLab6Hospitals.Name = "txtLab6Hospitals";
-            this.txtLab6Hospitals.Size = new System.Drawing.Size(300, 25);
-            this.txtLab6Hospitals.TabIndex = 3;
-            this.txtLab6Hospitals.Text = "Hospital_Central,Hospital_North,Hospital_South";
-            // 
-            // lblLab6Hospitals
-            // 
-            this.lblLab6Hospitals.AutoSize = true;
-            this.lblLab6Hospitals.Location = new System.Drawing.Point(330, 20);
-            this.lblLab6Hospitals.Name = "lblLab6Hospitals";
-            this.lblLab6Hospitals.Size = new System.Drawing.Size(76, 19);
-            this.lblLab6Hospitals.TabIndex = 2;
-            this.lblLab6Hospitals.Text = "Больницы:";
-            // 
-            // txtLab6Start
-            // 
-            this.txtLab6Start.Location = new System.Drawing.Point(160, 17);
-            this.txtLab6Start.Name = "txtLab6Start";
-            this.txtLab6Start.Size = new System.Drawing.Size(150, 25);
-            this.txtLab6Start.TabIndex = 1;
-            this.txtLab6Start.Text = "MedPoint_4";
-            // 
-            // lblLab6Start
-            // 
-            this.lblLab6Start.AutoSize = true;
-            this.lblLab6Start.Location = new System.Drawing.Point(20, 20);
-            this.lblLab6Start.Name = "lblLab6Start";
-            this.lblLab6Start.Size = new System.Drawing.Size(121, 19);
-            this.lblLab6Start.TabIndex = 0;
-            this.lblLab6Start.Text = "Местоположение:";
-            // 
-            // tabPageCompare
-            // 
-            this.tabPageCompare.Controls.Add(this.dgvCompare);
-            this.tabPageCompare.Controls.Add(this.btnCompare);
-            this.tabPageCompare.Controls.Add(this.txtCompareTarget);
-            this.tabPageCompare.Controls.Add(this.lblCompareTarget);
-            this.tabPageCompare.Controls.Add(this.txtCompareStart);
-            this.tabPageCompare.Controls.Add(this.lblCompareStart);
-            this.tabPageCompare.Location = new System.Drawing.Point(4, 29);
-            this.tabPageCompare.Name = "tabPageCompare";
-            this.tabPageCompare.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCompare.Size = new System.Drawing.Size(992, 667);
-            this.tabPageCompare.TabIndex = 4;
-            this.tabPageCompare.Text = "5. Сравнение";
-            this.tabPageCompare.UseVisualStyleBackColor = true;
-            // 
-            // dgvCompare
-            // 
-            this.dgvCompare.AllowUserToAddRows = false;
-            this.dgvCompare.BackgroundColor = System.Drawing.Color.White;
-            this.dgvCompare.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCompare.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colAlgo,
-            this.colTime,
-            this.colResult,
-            this.colPath});
-            this.dgvCompare.Location = new System.Drawing.Point(20, 60);
-            this.dgvCompare.Name = "dgvCompare";
-            this.dgvCompare.ReadOnly = true;
-            this.dgvCompare.Size = new System.Drawing.Size(950, 580);
-            this.dgvCompare.TabIndex = 5;
-            // 
-            // colAlgo
-            // 
-            this.colAlgo.HeaderText = "Алгоритм";
-            this.colAlgo.Name = "colAlgo";
-            this.colAlgo.ReadOnly = true;
-            // 
-            // colTime
-            // 
-            this.colTime.HeaderText = "Время (мс)";
-            this.colTime.Name = "colTime";
-            this.colTime.ReadOnly = true;
-            // 
-            // colResult
-            // 
-            this.colResult.HeaderText = "Результат";
-            this.colResult.Name = "colResult";
-            this.colResult.ReadOnly = true;
-            // 
-            // colPath
-            // 
-            this.colPath.HeaderText = "Найденный путь";
-            this.colPath.Name = "colPath";
-            this.colPath.ReadOnly = true;
-            this.colPath.Width = 300;
-            // 
-            // btnCompare
-            // 
-            this.btnCompare.BackColor = System.Drawing.Color.FromArgb(0, 120, 215);
-            this.btnCompare.FlatAppearance.BorderSize = 0;
-            this.btnCompare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCompare.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCompare.ForeColor = System.Drawing.Color.White;
-            this.btnCompare.Location = new System.Drawing.Point(480, 15);
-            this.btnCompare.Name = "btnCompare";
-            this.btnCompare.Size = new System.Drawing.Size(200, 30);
-            this.btnCompare.TabIndex = 4;
-            this.btnCompare.Text = "Сравнить алгоритмы";
-            this.btnCompare.UseVisualStyleBackColor = false;
-            this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
-            // 
-            // txtCompareTarget
-            // 
-            this.txtCompareTarget.Location = new System.Drawing.Point(310, 17);
-            this.txtCompareTarget.Name = "txtCompareTarget";
-            this.txtCompareTarget.Size = new System.Drawing.Size(150, 25);
-            this.txtCompareTarget.TabIndex = 3;
-            this.txtCompareTarget.Text = "MedPoint_7";
-            // 
-            // lblCompareTarget
-            // 
-            this.lblCompareTarget.AutoSize = true;
-            this.lblCompareTarget.Location = new System.Drawing.Point(260, 20);
-            this.lblCompareTarget.Name = "lblCompareTarget";
-            this.lblCompareTarget.Size = new System.Drawing.Size(46, 19);
-            this.lblCompareTarget.TabIndex = 2;
-            this.lblCompareTarget.Text = "Куда:";
-            // 
-            // txtCompareStart
-            // 
-            this.txtCompareStart.Location = new System.Drawing.Point(90, 17);
-            this.txtCompareStart.Name = "txtCompareStart";
-            this.txtCompareStart.Size = new System.Drawing.Size(150, 25);
-            this.txtCompareStart.TabIndex = 1;
-            this.txtCompareStart.Text = "Hospital_Central";
-            // 
-            // lblCompareStart
-            // 
-            this.lblCompareStart.AutoSize = true;
-            this.lblCompareStart.Location = new System.Drawing.Point(20, 20);
-            this.lblCompareStart.Name = "lblCompareStart";
-            this.lblCompareStart.Size = new System.Drawing.Size(62, 19);
-            this.lblCompareStart.TabIndex = 0;
-            this.lblCompareStart.Text = "Откуда:";
+            btnLoadGraph.BackColor = Color.FromArgb(66, 133, 244);
+            btnLoadGraph.Dock = DockStyle.Top;
+            btnLoadGraph.FlatAppearance.BorderSize = 0;
+            btnLoadGraph.FlatStyle = FlatStyle.Flat;
+            btnLoadGraph.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnLoadGraph.ForeColor = Color.White;
+            btnLoadGraph.Location = new Point(11, 73);
+            btnLoadGraph.Margin = new Padding(3, 4, 3, 4);
+            btnLoadGraph.Name = "btnLoadGraph";
+            btnLoadGraph.Size = new Size(606, 47);
+            btnLoadGraph.TabIndex = 1;
+            btnLoadGraph.Text = "Загрузить граф из файла";
+            btnLoadGraph.UseVisualStyleBackColor = false;
+            btnLoadGraph.Click += btnLoadGraph_Click;
+            // 
+            // lblTitle
+            // 
+            lblTitle.Dock = DockStyle.Top;
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.Location = new Point(11, 13);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(606, 60);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Дорожная сеть района";
+            lblTitle.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // txtOutput
+            // 
+            txtOutput.BackColor = Color.FromArgb(30, 30, 30);
+            txtOutput.BorderStyle = BorderStyle.None;
+            txtOutput.Dock = DockStyle.Fill;
+            txtOutput.Font = new Font("Consolas", 9.5F);
+            txtOutput.ForeColor = Color.FromArgb(100, 255, 100);
+            txtOutput.Location = new Point(11, 33);
+            txtOutput.Margin = new Padding(3, 4, 3, 4);
+            txtOutput.Multiline = true;
+            txtOutput.Name = "txtOutput";
+            txtOutput.ReadOnly = true;
+            txtOutput.ScrollBars = ScrollBars.Vertical;
+            txtOutput.Size = new Size(716, 887);
+            txtOutput.TabIndex = 1;
+            // 
+            // lblResults
+            // 
+            lblResults.Dock = DockStyle.Top;
+            lblResults.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblResults.Location = new Point(11, 13);
+            lblResults.Name = "lblResults";
+            lblResults.Size = new Size(716, 20);
+            lblResults.TabIndex = 0;
+            lblResults.Text = "Результаты:";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 700);
-            this.Controls.Add(this.tabControl);
-            this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Лабораторные 4-6 | Вариант 17";
-            this.tabControl.ResumeLayout(false);
-            this.tabPageLoad.ResumeLayout(false);
-            this.tabPageLoad.PerformLayout();
-            this.tabPageLab4.ResumeLayout(false);
-            this.tabPageLab4.PerformLayout();
-            this.tabPageLab5.ResumeLayout(false);
-            this.tabPageLab5.PerformLayout();
-            this.tabPageLab6.ResumeLayout(false);
-            this.tabPageLab6.PerformLayout();
-            this.tabPageCompare.ResumeLayout(false);
-            this.tabPageCompare.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCompare)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(240, 240, 240);
+            ClientSize = new Size(1371, 933);
+            Controls.Add(splitContainer1);
+            Margin = new Padding(3, 4, 3, 4);
+            MinimumSize = new Size(1140, 784);
+            Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "ЛР №4–6 — Дорожная сеть района (Вариант 3)";
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            groupBoxVariantTask.ResumeLayout(false);
+            groupBoxVariantTask.PerformLayout();
+            groupBoxAnalysis.ResumeLayout(false);
+            groupBoxDijkstraRoute.ResumeLayout(false);
+            groupBoxDijkstraRoute.PerformLayout();
+            groupBoxDijkstra.ResumeLayout(false);
+            groupBoxDijkstra.PerformLayout();
+            groupBoxConnectivity.ResumeLayout(false);
+            groupBoxConnectivity.PerformLayout();
+            groupBoxDFS.ResumeLayout(false);
+            groupBoxBFS.ResumeLayout(false);
+            ResumeLayout(false);
+
         }
 
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPageLoad;
-        private System.Windows.Forms.TabPage tabPageLab4;
-        private System.Windows.Forms.TabPage tabPageLab5;
-        private System.Windows.Forms.TabPage tabPageLab6;
-        private System.Windows.Forms.TabPage tabPageCompare;
-        private System.Windows.Forms.Label lblFilePath;
-        private System.Windows.Forms.TextBox txtFilePath;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.GroupBox groupBoxBFS;
+        private System.Windows.Forms.Button btnBFS;
+        private System.Windows.Forms.ComboBox cmbBFSStart;
+        private System.Windows.Forms.GroupBox groupBoxDFS;
+        private System.Windows.Forms.Button btnDFS;
+        private System.Windows.Forms.ComboBox cmbDFSStart;
+        private System.Windows.Forms.GroupBox groupBoxConnectivity;
+        private System.Windows.Forms.Button btnCheckConnectivity;
+        private System.Windows.Forms.ComboBox cmbConnectivityTarget;
+        private System.Windows.Forms.Label lblConnectivityTarget;
+        private System.Windows.Forms.ComboBox cmbConnectivityStart;
+        private System.Windows.Forms.Label lblConnectivityStart;
+        private System.Windows.Forms.GroupBox groupBoxDijkstra;
+        private System.Windows.Forms.Button btnDijkstraAll;
+        private System.Windows.Forms.ComboBox cmbDijkstraSource;
+        private System.Windows.Forms.Label lblDijkstraSource;
+        private System.Windows.Forms.GroupBox groupBoxDijkstraRoute;
+        private System.Windows.Forms.Button btnFindRoute;
+        private System.Windows.Forms.ComboBox cmbDijkstraRouteTarget;
+        private System.Windows.Forms.Label lblDijkstraRouteTarget;
+        private System.Windows.Forms.ComboBox cmbDijkstraRouteStart;
+        private System.Windows.Forms.GroupBox groupBoxAnalysis;
+        private System.Windows.Forms.Button btnClearOutput;
+        private System.Windows.Forms.Button btnConnectedComponents;
+        private System.Windows.Forms.Button btnMST;
+        private System.Windows.Forms.Button btnArticulationPoints;
+        private System.Windows.Forms.GroupBox groupBoxVariantTask;
+        private System.Windows.Forms.Button btnVariantTask;
+        private System.Windows.Forms.ComboBox cmbVariantTarget;
+        private System.Windows.Forms.Label lblVariantTarget;
+        private System.Windows.Forms.ComboBox cmbVariantStart;
         private System.Windows.Forms.Button btnLoadGraph;
-        private System.Windows.Forms.Button btnBrowseFile;
-        private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.CheckBox chkShowWeights;
-        private System.Windows.Forms.Button btnRedrawGraph;
-        private System.Windows.Forms.Panel pnlGraphMain;
-        private System.Windows.Forms.Label lblLab4Start;
-        private System.Windows.Forms.TextBox txtLab4Start;
-        private System.Windows.Forms.Label lblLab4Target;
-        private System.Windows.Forms.TextBox txtLab4Target;
-        private System.Windows.Forms.Button btnLab4Run;
-        private System.Windows.Forms.TextBox txtLab4Output;
-        private System.Windows.Forms.Panel pnlGraphLab4;
-        private System.Windows.Forms.Label lblLab5Start;
-        private System.Windows.Forms.TextBox txtLab5Start;
-        private System.Windows.Forms.Label lblLab5Target;
-        private System.Windows.Forms.TextBox txtLab5Target;
-        private System.Windows.Forms.Button btnLab5Run;
-        private System.Windows.Forms.TextBox txtLab5Output;
-        private System.Windows.Forms.Panel pnlGraphLab5;
-        private System.Windows.Forms.Label lblLab6Start;
-        private System.Windows.Forms.TextBox txtLab6Start;
-        private System.Windows.Forms.Label lblLab6Hospitals;
-        private System.Windows.Forms.TextBox txtLab6Hospitals;
-        private System.Windows.Forms.Button btnLab6Run;
-        private System.Windows.Forms.TextBox txtLab6Output;
-        private System.Windows.Forms.Panel pnlGraphLab6;
-        private System.Windows.Forms.Label lblCompareStart;
-        private System.Windows.Forms.TextBox txtCompareStart;
-        private System.Windows.Forms.Label lblCompareTarget;
-        private System.Windows.Forms.TextBox txtCompareTarget;
-        private System.Windows.Forms.Button btnCompare;
-        private System.Windows.Forms.DataGridView dgvCompare;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlgo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colResult;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPath;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.TextBox txtOutput;
+        private System.Windows.Forms.Label lblResults;
+        private System.Windows.Forms.Button btnExperiment;
     }
 }
