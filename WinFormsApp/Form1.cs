@@ -64,18 +64,54 @@ namespace WinFormsApp
             }
         }
 
-        private void AppendOutput(string text, Color? color = null)
+        private void AppendOutput(string text)
         {
-            txtOutput.AppendText(text + "\n");
-            if (color.HasValue)
-            {
-                // Можно добавить выделение цветом, если нужно
-            }
+            txtOutput.AppendText(text + Environment.NewLine);
         }
 
         private void ClearOutput()
         {
             txtOutput.Clear();
+        }
+
+        private List<string> FindBFSPath(string start, string target)
+        {
+            var visited = new HashSet<string>();
+            var parents = new Dictionary<string, string>();
+            var queue = new Queue<string>();
+
+            queue.Enqueue(start);
+            visited.Add(start);
+
+            while (queue.Count > 0)
+            {
+                var currentNode = queue.Dequeue();
+                if (currentNode == target) break;
+
+                foreach (var (neighbor, _) in _graph.AdjacencyList[currentNode])
+                {
+                    if (!visited.Contains(neighbor))
+                    {
+                        visited.Add(neighbor);
+                        parents[neighbor] = currentNode;
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            var path = new List<string>();
+            string currentNodePath = target;
+            while (currentNodePath != null)
+            {
+                path.Add(currentNodePath);
+                if (parents.TryGetValue(currentNodePath, out var parent))
+                    currentNodePath = parent;
+                else
+                    currentNodePath = null;
+            }
+
+            path.Reverse();
+            return path;
         }
 
         // ==================== ОСНОВНЫЕ ОБРАБОТЧИКИ ====================
@@ -96,13 +132,25 @@ namespace WinFormsApp
 
                         UpdateComboBoxes();
 
-                        AppendOutput($"✅ Граф успешно загружен из файла: {Path.GetFileName(_loadedFilePath)}");
+                        AppendOutput("✅ Граф успешно загружен!");
+                        AppendOutput(new string('═', 80));
+                        AppendOutput("");
+                        AppendOutput($"📁 Файл: {Path.GetFileName(_loadedFilePath)}");
                         AppendOutput($"📊 Вершин: {_graph.Vertices.Count}");
                         AppendOutput($"🔗 Рёбер: {_graph.EdgeCount}");
                         AppendOutput("");
-                        AppendOutput($"Вершины: {string.Join(", ", _graph.Vertices.Take(10))}" +
-                                    (_graph.Vertices.Count > 10 ? "..." : ""));
+                        AppendOutput("Вершины графа:");
                         AppendOutput("");
+
+                        int index = 1;
+                        foreach (var v in _graph.Vertices.OrderBy(x => x))
+                        {
+                            AppendOutput($"  {index,2}. {v}");
+                            index++;
+                        }
+
+                        AppendOutput("");
+                        AppendOutput(new string('═', 80));
                     }
                     catch (Exception ex)
                     {
@@ -134,10 +182,9 @@ namespace WinFormsApp
             stopwatch.Stop();
 
             AppendOutput($"BFS от вершины «{start}» ({result.Count} вершин)");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput("");
 
-            // Группируем по уровням
             var levels = new Dictionary<string, int>();
             var queue = new Queue<string>();
             queue.Enqueue(start);
@@ -161,11 +208,13 @@ namespace WinFormsApp
             {
                 var verticesAtLevel = levels.Where(kvp => kvp.Value == level)
                     .Select(kvp => kvp.Key).OrderBy(v => v);
-                AppendOutput($"Уровень {level}: {string.Join(", ", verticesAtLevel)}");
+
+                AppendOutput($"Уровень {level}:");
+                AppendOutput($"  {string.Join(", ", verticesAtLevel)}");
+                AppendOutput("");
             }
 
-            AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -189,12 +238,18 @@ namespace WinFormsApp
             stopwatch.Stop();
 
             AppendOutput($"DFS от вершины «{start}» ({result.Count} вершин)");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput("");
-            AppendOutput($"Порядок обхода:");
-            AppendOutput(string.Join(" → ", result));
+            AppendOutput("Порядок обхода:");
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                AppendOutput($"  {i + 1,3}. {result[i]}");
+            }
+
+            AppendOutput("");
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -219,23 +274,30 @@ namespace WinFormsApp
 
             stopwatch.Stop();
 
-            AppendOutput($"Проверка достижимости (BFS)");
-            AppendOutput(new string('─', 60));
+            AppendOutput("Проверка достижимости (BFS)");
+            AppendOutput(new string('─', 80));
             AppendOutput("");
-            AppendOutput($"Из: {start}");
-            AppendOutput($"В: {target}");
+            AppendOutput($"Из:  {start}");
+            AppendOutput($"В:   {target}");
             AppendOutput("");
 
             if (reachable)
             {
                 AppendOutput($"✅ Вершина «{target}» ДОСТИЖИМА из «{start}»");
 
-                // Находим путь
                 var path = FindBFSPath(start, target);
                 if (path.Count > 0)
                 {
                     AppendOutput("");
-                    AppendOutput($"Путь: {string.Join(" → ", path)}");
+                    AppendOutput("Путь:");
+                    for (int i = 0; i < path.Count; i++)
+                    {
+                        if (i < path.Count - 1)
+                            AppendOutput($"  {i + 1}. {path[i]}");
+                        else
+                            AppendOutput($"  {i + 1}. {path[i]} (цель)");
+                    }
+                    AppendOutput("");
                     AppendOutput($"Количество рёбер: {path.Count - 1}");
                 }
             }
@@ -245,49 +307,8 @@ namespace WinFormsApp
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
-        }
-
-        private List<string> FindBFSPath(string start, string target)
-        {
-            var visited = new HashSet<string>();
-            var parents = new Dictionary<string, string>();
-            var queue = new Queue<string>();
-
-            queue.Enqueue(start);
-            visited.Add(start);
-
-            while (queue.Count > 0)
-            {
-                var currentNode = queue.Dequeue();  // ← Изменили current на currentNode
-                if (currentNode == target) break;
-
-                foreach (var (neighbor, _) in _graph.AdjacencyList[currentNode])
-                {
-                    if (!visited.Contains(neighbor))
-                    {
-                        visited.Add(neighbor);
-                        parents[neighbor] = currentNode;
-                        queue.Enqueue(neighbor);
-                    }
-                }
-            }
-
-            // Восстанавливаем путь
-            var path = new List<string>();
-            string? currentNodePath = target;  // ← Изменили current на currentNodePath
-            while (currentNodePath != null)
-            {
-                path.Add(currentNodePath);
-                if (parents.TryGetValue(currentNodePath, out var parent))
-                    currentNodePath = parent;
-                else
-                    currentNodePath = null;
-            }
-
-            path.Reverse();
-            return path;
         }
 
         private void btnDijkstraAll_Click(object sender, EventArgs e)
@@ -313,19 +334,21 @@ namespace WinFormsApp
             stopwatch.Stop();
 
             AppendOutput($"Алгоритм Дейкстры от «{source}»");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput("");
-            AppendOutput($"Кратчайшие расстояния до всех вершин:");
+            AppendOutput("Кратчайшие расстояния до всех вершин:");
             AppendOutput("");
 
+            int index = 1;
             foreach (var kvp in distances.OrderBy(x => x.Value))
             {
-                string dist = kvp.Value == int.MaxValue ? "∞ (недостижима)" : $"{kvp.Value}";
-                AppendOutput($"  {kvp.Key,-30} : {dist}");
+                string dist = kvp.Value == int.MaxValue ? "∞ (недостижима)" : $"{kvp.Value} мин.";
+                AppendOutput($"  {index,2}. {kvp.Key,-35} : {dist}");
+                index++;
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -351,8 +374,8 @@ namespace WinFormsApp
 
             stopwatch.Stop();
 
-            AppendOutput($"Кратчайший маршрут (Дейкстра)");
-            AppendOutput(new string('─', 60));
+            AppendOutput("Кратчайший маршрут (Дейкстра)");
+            AppendOutput(new string('─', 80));
             AppendOutput("");
             AppendOutput($"От: {start}");
             AppendOutput($"До: {target}");
@@ -366,15 +389,24 @@ namespace WinFormsApp
             {
                 AppendOutput($"✅ Маршрут найден:");
                 AppendOutput("");
-                AppendOutput($"  {string.Join("\n  ↓\n  ", path)}");
+
+                for (int i = 0; i < path.Count; i++)
+                {
+                    if (i < path.Count - 1)
+                        AppendOutput($"  {i + 1}. {path[i]}");
+                    else
+                        AppendOutput($"  {i + 1}. {path[i]} ← цель");
+                }
+
                 AppendOutput("");
-                AppendOutput($"Суммарное расстояние: {distances[target]}");
+                AppendOutput(new string('─', 80));
+                AppendOutput($"Суммарное расстояние: {distances[target]} мин.");
                 AppendOutput($"Количество вершин: {path.Count}");
                 AppendOutput($"Количество рёбер: {path.Count - 1}");
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -394,8 +426,8 @@ namespace WinFormsApp
 
             stopwatch.Stop();
 
-            AppendOutput($"Точки сочленения (Articulation Points)");
-            AppendOutput(new string('─', 60));
+            AppendOutput("Точки сочленения (Articulation Points)");
+            AppendOutput(new string('─', 80));
             AppendOutput("");
 
             if (points.Count == 0)
@@ -409,16 +441,21 @@ namespace WinFormsApp
                 AppendOutput($"Найдено точек сочленения: {points.Count}");
                 AppendOutput("");
                 AppendOutput("Критические вершины:");
+                AppendOutput("");
+
+                int index = 1;
                 foreach (var point in points.OrderBy(p => p))
                 {
-                    AppendOutput($"  • {point}");
+                    AppendOutput($"  {index,2}. {point}");
+                    index++;
                 }
+
                 AppendOutput("");
                 AppendOutput("💡 Удаление любой из этих вершин разорвёт граф на компоненты");
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -439,23 +476,26 @@ namespace WinFormsApp
 
             stopwatch.Stop();
 
-            AppendOutput($"Минимальное остовное дерево (МОД)");
-            AppendOutput($"Алгоритм Прима");
-            AppendOutput(new string('─', 60));
+            AppendOutput("Минимальное остовное дерево (МОД)");
+            AppendOutput("Алгоритм Прима");
+            AppendOutput(new string('─', 80));
             AppendOutput("");
             AppendOutput($"Рёбра МОД ({mst.Count} шт.):");
             AppendOutput("");
 
+            int index = 1;
             foreach (var edge in mst.OrderBy(e => e.W))
             {
-                AppendOutput($"  {edge.U,-25} — {edge.V,-25} : {edge.W}");
+                AppendOutput($"  {index,2}. {edge.U,-30} —— {edge.V,-30} : {edge.W,3} мин.");
+                index++;
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
-            AppendOutput($"Суммарный вес МОД: {totalWeight}");
+            AppendOutput(new string('═', 80));
+            AppendOutput($"Суммарный вес МОД: {totalWeight} мин.");
+            AppendOutput(new string('═', 80));
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -475,8 +515,8 @@ namespace WinFormsApp
 
             stopwatch.Stop();
 
-            AppendOutput($"Компоненты связности графа");
-            AppendOutput(new string('─', 60));
+            AppendOutput("Компоненты связности графа");
+            AppendOutput(new string('─', 80));
             AppendOutput("");
             AppendOutput($"Количество компонент: {components.Count}");
             AppendOutput("");
@@ -484,7 +524,14 @@ namespace WinFormsApp
             for (int i = 0; i < components.Count; i++)
             {
                 AppendOutput($"Компонента {i + 1} ({components[i].Count} вершин):");
-                AppendOutput($"  {string.Join(", ", components[i].OrderBy(v => v))}");
+                AppendOutput("");
+
+                int index = 1;
+                foreach (var vertex in components[i].OrderBy(v => v))
+                {
+                    AppendOutput($"  {index,2}. {vertex}");
+                    index++;
+                }
                 AppendOutput("");
             }
 
@@ -494,19 +541,16 @@ namespace WinFormsApp
             }
             else
             {
-                AppendOutput("⚠️ Граф несвязный (несколько компонент)");
+                AppendOutput("⚠️  Граф несвязный (несколько компонент)");
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
         private void btnVariantTask_Click(object sender, EventArgs e)
         {
-            // Вариант 3: Дорожная сеть района
-            // Задача: найти кратчайший маршрут между двумя точками
-
             if (_graph.Vertices.Count == 0)
             {
                 MessageBox.Show("Сначала загрузите граф!", "Внимание",
@@ -527,11 +571,11 @@ namespace WinFormsApp
 
             stopwatch.Stop();
 
-            AppendOutput($"ЗАДАЧА ВАРИАНТА 3");
-            AppendOutput($"Дорожная сеть района");
-            AppendOutput(new string('─', 60));
+            AppendOutput("ЗАДАЧА ВАРИАНТА 17");
+            AppendOutput("Сеть больниц и медицинских пунктов");
+            AppendOutput(new string('═', 80));
             AppendOutput("");
-            AppendOutput($"Найти кратчайший маршрут между двумя точками");
+            AppendOutput("Найти ближайшую больницу и маршрут к ней");
             AppendOutput("");
             AppendOutput($"От: {start}");
             AppendOutput($"До: {target}");
@@ -548,22 +592,21 @@ namespace WinFormsApp
 
                 for (int i = 0; i < path.Count; i++)
                 {
-                    if (i > 0)
-                    {
-                        AppendOutput("        ↓");
-                    }
-                    AppendOutput($"  {i + 1}. {path[i]}");
+                    if (i < path.Count - 1)
+                        AppendOutput($"  {i + 1,2}. {path[i]}");
+                    else
+                        AppendOutput($"  {i + 1,2}. {path[i]} ← больница");
                 }
 
                 AppendOutput("");
-                AppendOutput(new string('─', 60));
-                AppendOutput($"Длина маршрута: {distances[target]} км");
+                AppendOutput(new string('─', 80));
+                AppendOutput($"Длина маршрута: {distances[target]} мин.");
                 AppendOutput($"Количество перекрёстков: {path.Count}");
                 AppendOutput($"Количество дорог: {path.Count - 1}");
             }
 
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput($"⏱ Время: {stopwatch.ElapsedMilliseconds:F4} мс");
         }
 
@@ -583,8 +626,8 @@ namespace WinFormsApp
 
             ClearOutput();
 
-            AppendOutput($"ЭКСПЕРИМЕНТ: Сравнение алгоритмов");
-            AppendOutput(new string('═', 60));
+            AppendOutput("ЭКСПЕРИМЕНТ: Сравнение алгоритмов");
+            AppendOutput(new string('═', 80));
             AppendOutput("");
             AppendOutput($"Размер графа: {_graph.Vertices.Count} вершин, {_graph.EdgeCount} рёбер");
             AppendOutput("");
@@ -592,43 +635,31 @@ namespace WinFormsApp
             string start = _graph.Vertices.First();
             string target = _graph.Vertices.Skip(Math.Min(5, _graph.Vertices.Count - 1)).First();
 
-            // BFS
             var swBFS = Stopwatch.StartNew();
             Algorithms.BFS(_graph, start);
             swBFS.Stop();
 
-            // DFS
             var swDFS = Stopwatch.StartNew();
             Algorithms.DFS(_graph, start);
             swDFS.Stop();
 
-            // Dijkstra
             var swDijkstra = Stopwatch.StartNew();
             Algorithms.Dijkstra(_graph, start);
             swDijkstra.Stop();
 
-            AppendOutput($"Результаты:");
+            AppendOutput("Результаты:");
             AppendOutput("");
-            AppendOutput($"  BFS:       {swBFS.ElapsedMilliseconds,5} мс");
-            AppendOutput($"  DFS:       {swDFS.ElapsedMilliseconds,5} мс");
-            AppendOutput($"  Дейкстра:  {swDijkstra.ElapsedMilliseconds,5} мс");
+            AppendOutput($"  BFS:          {swBFS.ElapsedMilliseconds,5} мс");
+            AppendOutput($"  DFS:          {swDFS.ElapsedMilliseconds,5} мс");
+            AppendOutput($"  Дейкстра:     {swDijkstra.ElapsedMilliseconds,5} мс");
             AppendOutput("");
-            AppendOutput(new string('─', 60));
+            AppendOutput(new string('─', 80));
             AppendOutput("");
             AppendOutput("💡 Вывод:");
+            AppendOutput("");
             AppendOutput("  • BFS и DFS работают за O(V+E)");
             AppendOutput("  • Дейкстра медленнее: O((V+E) log V)");
             AppendOutput("  • При увеличении графа разница растёт");
-        }
-
-        private void lblDijkstraRouteStart_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbVariantStart_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

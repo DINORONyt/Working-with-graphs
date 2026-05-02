@@ -155,7 +155,7 @@
             cmbVariantStart.Name = "cmbVariantStart";
             cmbVariantStart.Size = new Size(262, 28);
             cmbVariantStart.TabIndex = 0;
-            cmbVariantStart.SelectedIndexChanged += cmbVariantStart_SelectedIndexChanged;
+            //cmbVariantStart.SelectedIndexChanged += cmbVariantStart_SelectedIndexChanged;
             // 
             // groupBoxAnalysis
             // 
